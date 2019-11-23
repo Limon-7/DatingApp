@@ -48,6 +48,7 @@ namespace DatingApp.Controllers
         [HttpPost("login")]
         //Reuse Register dto 
         public async Task<IActionResult> Login(LoginDto dto){
+            // throw new Exception("Computer says no");
             var user= await _authRepository.Login(dto.UserName.ToLower(),dto.Password);
             if(user==null)
             {

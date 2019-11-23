@@ -9,25 +9,15 @@ import { HttpClient } from '@angular/common/http';
 export class HomeComponent implements OnInit {
 
   registerMode = false;
-  values: any = {};
-  url = 'http://localhost:5000/values';
   constructor(private http: HttpClient) { }
 
   ngOnInit() {
-    this.getValues();
   }
   registerToggle() {
     this.registerMode = true;
   }
   cancelRegister(registerMode: boolean) {
     this.registerMode = false;
-  }
-  getValues() {
-    this.http.get(this.url).subscribe(response => {
-      this.values = response;
-    }, error => {
-      console.log(error);
-    });
   }
 
 }
