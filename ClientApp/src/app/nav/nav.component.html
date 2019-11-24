@@ -1,21 +1,21 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary ">
   <div class="container">
-      <a class="navbar-brand" href="#">DattingApp</a>
+      <a class="navbar-brand" [routerLink]="['/home']">DattingApp</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
     
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul *ngIf="loggedIn()" class="navbar-nav mr-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="#">Matches </a>
+          <li class="nav-item" routerLinkActive="active">
+            <a class="nav-link"[routerLink]="['/members']" >Matches </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Lists</a>
+          <li class="nav-item" routerLinkActive="active">
+            <a class="nav-link" [routerLink]="['/lists']" >Lists</a>
           </li>
           
-          <li class="nav-item">
-            <a class="nav-link " href="#" >Message</a>
+          <li class="nav-item" routerLinkActive="active">
+            <a class="nav-link " [routerLink]="['/message']">Message</a>
           </li>
         </ul>
       </div>
