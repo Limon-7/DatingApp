@@ -9,7 +9,7 @@
     <input type="password" name="password" id="password" class="form-control" placeholder="Password" required [(ngModel)]="model.password" autocomplete="new-password">
   </div>
   <div class="form-group text-center">
-    <button class="btn btn-success mr-2" type="submit" [disabled]="!f.valid">Register</button>
+    <button class="btn btn-primary mr-2" type="submit" [disabled]="!f.valid">Register</button>
     <button class="btn btn-warning" type="submit" (click)="cancle()">Cancle</button>
   </div>
 </form>

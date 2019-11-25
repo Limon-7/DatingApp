@@ -42,7 +42,7 @@ namespace DatingApp.Data
         public async Task<User> Register(User user, string password)
         {
             byte[] passwordHash,passwordSalt;
-            //CreatePasswordHas(password,  out passwordhash, passwordsalt);
+            // CreatePasswordHas(password,  out  passwordhash, passwordsalt);
             using( var hmc= new HMACSHA512()){
                 passwordHash=hmc.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
                 passwordSalt=hmc.Key;
