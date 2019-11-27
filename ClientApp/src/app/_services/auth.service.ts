@@ -17,8 +17,11 @@ export class AuthService {
     return this.http.post(this.baseUrl + '/' + 'login', credential).pipe(
       map(response => {
         const user = response;
+        // tslint:disable-next-line: no-string-literal
         if (user && user['token']) {
+          // tslint:disable-next-line: no-string-literal
           localStorage.setItem('token', response['token']);
+          // tslint:disable-next-line: no-string-literal
           this.decodedToken = this.jwtHelper.decodeToken(response['token']);
           console.log(this.decodedToken);
         }

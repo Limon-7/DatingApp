@@ -25,7 +25,7 @@
             <!-- welcome{{model.name}} -->
           </a>
           <div class="dropdown-menu mt-3" *dropdownMenu>
-            <a class="dropdown-item" ><i class="fa fa-user"></i> Edit Profile</a>
+            <a class="dropdown-item" [routerLink]="['/member/edit']" ><i class="fa fa-user"></i> Edit Profile</a>
             <a class="dropdown-item" (click)="logOut()"><i class="fa fa-sign-out"></i> Logout</a>
           </div>
         </div>
