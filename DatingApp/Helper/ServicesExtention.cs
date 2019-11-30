@@ -11,6 +11,8 @@ namespace DatingApp.Helper
     {
         public static void CustomSerices(this IServiceCollection services){
             services.AddCors();
+            //cloudinary section
+
             services.AddAutoMapper(typeof(Startup));
             //services.AddTransient<Seed>();
             services.AddScoped<IAuthRepository, AuthRepository>();

@@ -43,6 +43,7 @@ namespace DatingApp
                 });
 
             services.CustomSerices();
+            services.Configure<CloudinarySettings>(Configuration.GetSection("CloudinarySettings"));
             // services.AddCors();
             // services.AddAutoMapper(typeof(Startup));
             //services.AddTransient<Seed>();
@@ -102,7 +103,8 @@ namespace DatingApp
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                // endpoints.MapControllers();
+                endpoints.MapDefaultControllerRoute();
             });
         }
     }

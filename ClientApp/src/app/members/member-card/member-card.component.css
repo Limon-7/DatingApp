@@ -5,6 +5,7 @@
     opacity: .7;
 }
 .card img{
+    height: 150px;
     transform: scale(1.0);
     transition-duration: 500ms;
     transition-timing-function: ease-out;

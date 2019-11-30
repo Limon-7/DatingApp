@@ -4,6 +4,7 @@ import { map } from 'rxjs/operators';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { from } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { User } from '../_models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,8 @@ export class AuthService {
   baseUrl = environment.apiUrl + 'auth';
   jwtHelper = new JwtHelperService();
   decodedToken: any ;
+  currentUser: User;
+
   constructor(private http: HttpClient) { }
   login(credential: any) {
     return this.http.post(this.baseUrl + '/' + 'login', credential).pipe(
@@ -20,9 +23,13 @@ export class AuthService {
         // tslint:disable-next-line: no-string-literal
         if (user && user['token']) {
           // tslint:disable-next-line: no-string-literal
-          localStorage.setItem('token', response['token']);
+          localStorage.setItem('token', user['token']);
           // tslint:disable-next-line: no-string-literal
-          this.decodedToken = this.jwtHelper.decodeToken(response['token']);
+          localStorage.setItem('user', JSON.stringify(user['userphoto']));
+          // tslint:disable-next-line: no-string-literal
+          this.decodedToken = this.jwtHelper.decodeToken(user['token']);
+          // tslint:disable-next-line: no-string-literal
+          this.currentUser = user['userphoto'];
           console.log(this.decodedToken);
         }
       })

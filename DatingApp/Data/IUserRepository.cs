@@ -9,5 +9,7 @@ namespace DatingApp.Data
          Task <IEnumerable<User>> GetUsers();
          Task<User> GetUserById(int id);
          Task<bool> SaveAll();
+         Task<Photo> GetPhoto(int id);
+         Task<Photo> GetMainPhoto(int userId);
     }
 }
