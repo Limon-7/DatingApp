@@ -1,10 +1,12 @@
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DatingApp.Controllers
 {
+    [Authorize]
     [ApiController]
-   [Route("[controller]")]
+    [Route("[controller]")]
     public class PeopleController: Controller
     {
         //[HttpGet] 

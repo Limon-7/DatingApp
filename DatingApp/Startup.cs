@@ -41,14 +41,17 @@ namespace DatingApp
                     opt.SerializerSettings.ReferenceLoopHandling=Newtonsoft.Json.ReferenceLoopHandling.Ignore;
                     // opt.JsonSerializerSettings.ReferenceLoopHandling=Newtonsoft.Json.ReferenceLoopHandling.Ignore;
                 });
-            services.AddCors();
-            services.AddAutoMapper(typeof(Startup));
-            services.AddTransient<Seed>();
+
+            services.CustomSerices();
+            services.Configure<CloudinarySettings>(Configuration.GetSection("CloudinarySettings"));
+            // services.AddCors();
+            // services.AddAutoMapper(typeof(Startup));
+            //services.AddTransient<Seed>();
 
 
-            services.AddScoped<IAuthRepository, AuthRepository>();
-            services.AddScoped<IValuesRepository, ValuesRepository>();
-            services.AddScoped<IUserRepository, UserRepository>();
+            // services.AddScoped<IAuthRepository, AuthRepository>();
+            // services.AddScoped<IValuesRepository, ValuesRepository>();
+            // services.AddScoped<IUserRepository, UserRepository>();
 
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(option =>
@@ -64,7 +67,7 @@ namespace DatingApp
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, Seed seed)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -100,7 +103,8 @@ namespace DatingApp
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                // endpoints.MapControllers();
+                endpoints.MapDefaultControllerRoute();
             });
         }
     }
