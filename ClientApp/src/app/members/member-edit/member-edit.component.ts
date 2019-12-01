@@ -14,11 +14,8 @@ import { AuthService } from 'src/app/_services/auth.service';
 export class MemberEditComponent implements OnInit {
   @ViewChild('editForm', { static: false }) editForm: NgForm;
   user: User;
-  gen = [
-    { id: 0, name: 'Other' },
-    { id: 1, name: 'Male' },
-    { id: 2, name: 'Female' },
-  ];
+  photoUrl: string;
+
   @HostListener('window:beforeunload', ['$event'])
   unloadNotification($event: any) {
     if (this.editForm.dirty) {
@@ -34,6 +31,7 @@ export class MemberEditComponent implements OnInit {
       // tslint:disable-next-line: no-string-literal
       this.user = deta['user'];
     });
+    this.authservice.currentPhotoUrl.subscribe(p => this.photoUrl = p);
   }
 
   updateUser() {
