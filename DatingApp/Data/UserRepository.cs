@@ -13,6 +13,11 @@ namespace DatingApp.Data
             
         }
 
+        public void DeletePhoto(Photo photo)
+        {
+            _context.Remove(photo);
+        }
+
         public async Task<Photo> GetMainPhoto(int userId)
         {
             return await _context.Photos.Where(u=> u.UserId==userId).FirstOrDefaultAsync(p=>p.IsMain);

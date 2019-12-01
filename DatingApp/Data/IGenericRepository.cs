@@ -10,7 +10,8 @@ namespace DatingApp.Data
         Task<TEntity> GetById(int id);
         Task Create(TEntity entity);
         Task Update(int id, TEntity entity);
-        Task Delete(int id); 
+        Task DeleteById(int id); 
+        void  Delete (TEntity entity);
 
     }
 }

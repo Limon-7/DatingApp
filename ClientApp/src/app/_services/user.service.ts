@@ -23,4 +23,7 @@ constructor(private http: HttpClient) { }
   setMainPhoto(userId: number, id: number) {
     return this.http.put(this.baseUrl + 'user/' + userId + '/photos/' + id + '/setMain', {});
   }
+  deletePhoto(userId: number, id: number) {
+    return this.http.delete(this.baseUrl + 'user/' + userId + '/photos/' + id);
+  }
 }

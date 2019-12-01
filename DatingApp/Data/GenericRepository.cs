@@ -33,13 +33,16 @@ namespace DatingApp.Data
            _context.Set<TEntity>().Update(entity);
            await _context.SaveChangesAsync();
         }
-        public async Task Delete(int id)
+        public async Task DeleteById(int id)
         {
             var entity= await _context.Set<TEntity>().FindAsync(id);
             _context.Set<TEntity>().Remove(entity);
             await _context.SaveChangesAsync();
         }
 
-
+        public void Delete(TEntity entity)
+        {
+            _context.Set<TEntity>().Remove(entity);
+        }
     }
 }
