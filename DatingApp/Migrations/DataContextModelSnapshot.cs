@@ -18,7 +18,7 @@ namespace DatingApp.Migrations
 
             modelBuilder.Entity("DatingApp.Models.Photo", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -40,7 +40,7 @@ namespace DatingApp.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
                     b.HasIndex("UserId");
 
@@ -65,8 +65,8 @@ namespace DatingApp.Migrations
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Gender")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Gender")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Interests")
                         .HasColumnType("TEXT");

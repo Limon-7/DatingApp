@@ -43,7 +43,7 @@ export class PhotoEditorComponent implements OnInit {
     this.uploader.onAfterAddingFile = (file) => { file.withCredentials = false; };
     this.uploader.onSuccessItem = (item, respose, status, headers) => {
       if (respose) {
-        const res: Photo = JSON.parse (respose);
+        const res: Photo = JSON.parse(respose);
         const photo = {
           id: res.id,
           url: res.url,
@@ -52,10 +52,15 @@ export class PhotoEditorComponent implements OnInit {
           isMain: res.isMain
         };
         this.photos.push(photo);
+        if (photo.isMain) {
+          this.authService.changeMemberPhoto(photo.url);
+          this.authService.currentUser.photoUrl = photo.url;
+          localStorage.setItem('user', JSON.stringify(this.authService.currentUser));
+        }
       }
     };
   }
-  setMainPhoto( photo: Photo) {
+  setMainPhoto(photo: Photo) {
     this.userService.setMainPhoto(this.authService.decodedToken.nameid, photo.id).subscribe(() => {
       this.currentMain = this.photos.filter(p => p.isMain === true)[0];
       this.currentMain.isMain = false;
@@ -71,12 +76,12 @@ export class PhotoEditorComponent implements OnInit {
   deletePhoto(id: number) {
     this.alertify.confirm('Are you want to delete this photo', () => {
       this.userService.deletePhoto(this.authService.decodedToken.nameid, id)
-      .subscribe(() => {
-        this.photos.splice(this.photos.findIndex(p => p.id === id), 1 );
-        this.alertify.success('Photo has been Deleted');
-      }, err => {
-        this.alertify.error(err);
-      });
+        .subscribe(() => {
+          this.photos.splice(this.photos.findIndex(p => p.id === id), 1);
+          this.alertify.success('Photo has been Deleted');
+        }, err => {
+          this.alertify.error(err);
+        });
     });
   }
 }

@@ -30,23 +30,17 @@ namespace DatingApp.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register(UserRegisterDto dto)
+        public async Task<IActionResult> Register([FromBody] UserRegisterDto dto)
         {
             var username = dto.UserName.ToLower();
 
             if (await _authRepository.UserExists(username))
-            {
                 return BadRequest("User Name already exists");
-            }
-            else
-            {
-                var userToCreate = new User()
-                {
-                    UserName = dto.UserName
-                };
-                var createUser = await _authRepository.Register(userToCreate, dto.Password);
-                return StatusCode(201);
-            }
+
+            var userToCreate = _imapper.Map<User>(dto);
+            var createUser = await _authRepository.Register(userToCreate, dto.Password);
+            var userToReturn= _imapper.Map<UserForDetailsDto>(createUser);
+            return CreatedAtRoute("GetUser", new {Controller="User",id=createUser.Id},userToReturn);
         }
         [HttpPost("login")]
         //Reuse Register dto 
@@ -81,19 +75,23 @@ namespace DatingApp.Controllers
             });
         }
 
-
-
-
-
-
-        //[HttpGet] 
-        [HttpGet("all")]
-        public ActionResult<IEnumerable<string>> GetAll()
+        [HttpGet("checkUsername")]
+        public async Task<IActionResult> checkUserName(string username)
         {
-            return new string[]
+            //var getuser = username.ToLower();
+            var user= await _authRepository.UserExists(username);
+            if(user)
             {
-            "limon","tarek","katappa"
-            };
+                return BadRequest(new 
+                {
+                    username
+                });
+            }
+            return Ok(new
+            {
+                Message = username
+            });
         }
+
     }
 }

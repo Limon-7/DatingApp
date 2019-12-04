@@ -26,4 +26,7 @@ constructor(private http: HttpClient) { }
   deletePhoto(userId: number, id: number) {
     return this.http.delete(this.baseUrl + 'user/' + userId + '/photos/' + id);
   }
+  checkUsernameAvailAvility(name: any) {
+    return this.http.get(this.baseUrl + 'auth/' + 'checkUserName', name);
+  }
 }

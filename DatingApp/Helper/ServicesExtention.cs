@@ -14,10 +14,11 @@ namespace DatingApp.Helper
             //cloudinary section
 
             services.AddAutoMapper(typeof(Startup));
-            //services.AddTransient<Seed>();
+            // services.AddTransient<Seed>();
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped<IValuesRepository, ValuesRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<LogUserActivity>();
         }
     }
 }
