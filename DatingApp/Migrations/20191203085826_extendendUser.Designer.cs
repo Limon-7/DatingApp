@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DatingApp.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20191125091004_ExtendedUser")]
-    partial class ExtendedUser
+    [Migration("20191203085826_extendendUser")]
+    partial class extendendUser
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,7 +20,7 @@ namespace DatingApp.Migrations
 
             modelBuilder.Entity("DatingApp.Models.Photo", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -33,13 +33,16 @@ namespace DatingApp.Migrations
                     b.Property<bool>("IsMain")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("PublicId")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Url")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("UserId")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
                     b.HasIndex("UserId");
 
@@ -64,8 +67,8 @@ namespace DatingApp.Migrations
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Gender")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Gender")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Interests")
                         .HasColumnType("TEXT");

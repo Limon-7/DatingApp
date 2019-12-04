@@ -1,7 +1,7 @@
 [
     {
-        "Username": "Carly",
-        "Gender": "2",
+        "Username": "Tusher",
+        "Gender": "Male",
         "DateOfBirth": "1977-03-15",
         "Password": "password",
         "KnownAs": "Carly",
@@ -20,11 +20,11 @@
         ]
     },
     {
-        "Username": "Jewel",
-        "Gender": "2",
+        "Username": "Hadi",
+        "Gender": "Male",
         "DateOfBirth": "1988-11-11",
         "Password": "password",
-        "KnownAs": "Jewel",
+        "KnownAs": "Hadi",
         "Created": "2017-01-12",
         "Introduction": "Culpa ad sunt aute sint nisi culpa eu laboris in veniam labore nisi. Veniam veniam nisi dolore duis velit aliqua. Culpa do nostrud laborum deserunt est. Occaecat voluptate cillum irure sunt labore. Aliquip quis voluptate cupidatat qui tempor commodo aliquip consequat veniam ad laboris. Aliquip eu proident labore officia labore reprehenderit in.\r\n",
         "LookingFor": "Sit ullamco irure ipsum proident ullamco esse velit quis irure velit culpa nulla amet ut. Eiusmod velit Lorem magna fugiat reprehenderit Lorem duis ad veniam amet do exercitation. Enim ipsum qui ex ut culpa ad deserunt ea incididunt.\r\n",
@@ -40,11 +40,11 @@
         ]
     },
     {
-        "Username": "Natalia",
-        "Gender": "2",
+        "Username": "Tarek",
+        "Gender": "Male",
         "DateOfBirth": "1951-01-20",
         "Password": "password",
-        "KnownAs": "Natalia",
+        "KnownAs": "Tarek",
         "Created": "2017-08-06",
         "Introduction": "Anim occaecat eiusmod non proident nisi cillum laborum anim in culpa eiusmod irure. Officia minim mollit quis aliquip ea exercitation nostrud sit voluptate nulla fugiat ad ad incididunt. Irure dolor nisi non tempor qui ea sint consequat do sunt. Id esse cupidatat ea voluptate veniam. Veniam officia ullamco do pariatur nostrud sit. Proident mollit eu dolore laborum incididunt do occaecat aliqua.\r\n",
         "LookingFor": "Excepteur excepteur duis eu id ullamco do labore consequat magna elit aliqua qui laboris. Veniam do nostrud ut consectetur ut. Velit et nostrud velit laborum voluptate esse dolore amet aliquip do labore occaecat. Incididunt commodo occaecat ad labore laboris sint cillum ipsum consectetur. Irure laboris excepteur elit consequat fugiat ut dolore sint voluptate officia pariatur fugiat ut.\r\n",
@@ -61,7 +61,7 @@
     },
     {
         "Username": "Earline",
-        "Gender": "2",
+        "Gender": "Female",
         "DateOfBirth": "1958-08-23",
         "Password": "password",
         "KnownAs": "Earline",
@@ -81,7 +81,7 @@
     },
     {
         "Username": "Patti",
-        "Gender": "2",
+        "Gender": "Female",
         "DateOfBirth": "1998-10-09",
         "Password": "password",
         "KnownAs": "Patti",
@@ -100,8 +100,8 @@
         ]
     },
     {
-        "Username": "Limon",
-        "Gender": "1",
+        "Username": "Wakil",
+        "Gender": "Male",
         "DateOfBirth": "1998-10-04",
         "Password": "password",
         "KnownAs": "Pat",
@@ -121,7 +121,7 @@
     },
     {
         "Username": "Marietta",
-        "Gender": "1",
+        "Gender": "Female",
         "DateOfBirth": "1987-05-04",
         "Password": "password",
         "KnownAs": "Marietta",
@@ -141,7 +141,7 @@
     },
     {
         "Username": "Tia",
-        "Gender": "1",
+        "Gender": "Female",
         "DateOfBirth": "1987-11-24",
         "Password": "password",
         "KnownAs": "Tia",
@@ -161,7 +161,7 @@
     },
     {
         "Username": "Rosie",
-        "Gender": "1",
+        "Gender": "Female",
         "DateOfBirth": "1962-08-15",
         "Password": "password",
         "KnownAs": "Rosie",
@@ -181,7 +181,7 @@
     },
     {
         "Username": "Rosalyn",
-        "Gender": "1",
+        "Gender": "Female",
         "DateOfBirth": "1998-09-01",
         "Password": "password",
         "KnownAs": "Rosalyn",
