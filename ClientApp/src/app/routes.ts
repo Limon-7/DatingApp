@@ -17,13 +17,19 @@ export const appRoutes: Routes = [
         runGuardsAndResolvers: 'always',
         canActivate: [AuthGuard],
         children: [
-            { path: 'members', component: MemberListsComponent,
-                resolve: {users: MemberListResolver}},
-            { path: 'members/:id', component: MemberDetailedComponent,
-                resolve: {user: MemberDetailResolver}},
-            { path: 'member/edit', component: MemberEditComponent,
-                resolve: {user: MemberEditResolver},
-                canDeactivate: [PreventUnsavedChanges]},
+            {
+                path: 'members', component: MemberListsComponent,
+                resolve: { users: MemberListResolver }
+            },
+            {
+                path: 'members/:id', component: MemberDetailedComponent,
+                resolve: { user: MemberDetailResolver }
+            },
+            {
+                path: 'member/edit', component: MemberEditComponent,
+                resolve: { user: MemberEditResolver },
+                canDeactivate: [PreventUnsavedChanges]
+            },
             { path: 'message', component: MessageComponent },
             { path: 'lists', component: ListsComponent }
         ]

@@ -8,6 +8,7 @@ import { NgxGalleryModule } from 'ngx-gallery';
 import { FileUploadModule } from 'ng2-file-upload';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TimeAgoPipe } from 'time-ago-pipe';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 
 import { AppComponent } from './app.component';
@@ -64,6 +65,7 @@ export function tokenGetter() {
       BsDatepickerModule.forRoot(),
       NgxGalleryModule,
       FileUploadModule,
+      MatPaginatorModule,
       RouterModule.forRoot(appRoutes),
       JwtModule.forRoot({
          config: {

@@ -1,9 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { User } from '../../_models/user';
 import { UserService } from '../../_services/user.service';
 import { AlertifyService } from '../../_services/alertify.service';
 import { ActivatedRoute } from '@angular/router';
 import { Pagination, PaginatedResult } from '../../_models/pagination';
+import { combineLatest } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-member-lists',
@@ -11,6 +14,8 @@ import { Pagination, PaginatedResult } from '../../_models/pagination';
   styleUrls: ['./member-lists.component.css']
 })
 export class MemberListsComponent implements OnInit {
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+
   users: User;
   pagination: Pagination;
   constructor(private userService: UserService, private altertify: AlertifyService, private route: ActivatedRoute) { }
@@ -34,6 +39,10 @@ export class MemberListsComponent implements OnInit {
   }
   pageChanged(event: any): void {
     this.pagination.currentPage = event.page;
+    // this.route.snapshot.queryParamMap.get('this.pagination.currentPage');
+    console.log();
     this.loadUsers();
+    console.log(event.page);
   }
+
 }

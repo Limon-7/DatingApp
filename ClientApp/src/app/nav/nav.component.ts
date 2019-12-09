@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../_services/auth.service';
 import { error } from 'util';
 import { AlertifyService } from '../_services/alertify.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
+import { Pagination } from '../_models/pagination';
 
 @Component({
   selector: 'app-nav',
@@ -12,9 +13,10 @@ import { Router } from '@angular/router';
 export class NavComponent implements OnInit {
   model: any = {};
   photoUrl: string;
+  pagination: Pagination;
 
-
-  constructor(public authservice: AuthService, private alertifyService: AlertifyService, private router: Router) { }
+  constructor(public authservice: AuthService, private alertifyService: AlertifyService,
+    private router: Router) { }
 
   ngOnInit() {
     this.authservice.currentPhotoUrl.subscribe(p => this.photoUrl = p);
@@ -25,8 +27,8 @@ export class NavComponent implements OnInit {
     }, err => {
       this.alertifyService.error(err);
     }, () => {
-      this.router.navigate(['/members']);
-  });
+      this.router.navigate(['/members', { queryParams: { pageNum: this.pagination.currentPage } }]);
+    });
   }
   loggedIn() {
     // const token = localStorage.getItem('token');
