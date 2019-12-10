@@ -12,6 +12,9 @@ import { Pagination, PaginatedResult } from '../../_models/pagination';
 })
 export class MemberListsComponent implements OnInit {
   users: User;
+  user: User = JSON.parse(localStorage.getItem('user'));
+  genderlist = [{ value: 'Male', display: 'Male' }, { value: 'Female', display: 'Female' }];
+  userParams: any = {};
   pagination: Pagination;
   constructor(private userService: UserService, private altertify: AlertifyService, private route: ActivatedRoute) { }
 
@@ -22,15 +25,26 @@ export class MemberListsComponent implements OnInit {
       // tslint:disable-next-line: no-string-literal
       this.pagination = data['users'].pagination;
     });
-    // this.loadUsers();
+    this.userParams.gender = this.user.gender === 'Female' ? 'Male' : 'Female';
+    this.userParams.minAge = 18;
+    this.userParams.maxAge = 99;
+    this.userParams.orderBy = 'lastActive';
+  }
+  resetFilters() {
+    this.userParams.gender = this.user.gender === 'Female' ? 'Male' : 'Female';
+    this.userParams.minAge = 18;
+    this.userParams.maxAge = 99;
+    // this.userParams.orderBy = 'lastActive';
+    this.loadUsers();
   }
   loadUsers() {
-    this.userService.getUsers(this.pagination.currentPage, this.pagination.iteamsPerPage).subscribe((res: PaginatedResult<User>) => {
-      this.users = res.result;
-      this.pagination = res.pagination;
-    }, err => {
-      this.altertify.error(err);
-    });
+    this.userService.getUsers(this.pagination.currentPage,
+      this.pagination.iteamsPerPage, this.userParams).subscribe((res: PaginatedResult<User>) => {
+        this.users = res.result;
+        this.pagination = res.pagination;
+      }, err => {
+        this.altertify.error(err);
+      });
   }
   pageChanged(event: any): void {
     this.pagination.currentPage = event.page;
