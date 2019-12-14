@@ -13,5 +13,7 @@ namespace DatingApp.Data
         Task<Photo> GetPhoto(int id);
         Task<Photo> GetMainPhoto(int userId);
         public void DeletePhoto(Photo photo);
+        Task<Like> GetLike(int userId, int recipientId);
+        void Add<Like>(Like entity);
     }
 }
