@@ -12,6 +12,7 @@ export class ErrorInterceptor implements HttpInterceptor {
                     if (err.status === 401) {
                         return throwError(err.statusText);
                     }
+                    
                     const applicatiorError = err.headers.get('Application-Error');
                     if (applicatiorError) {
                         return throwError(applicatiorError);
@@ -19,9 +20,12 @@ export class ErrorInterceptor implements HttpInterceptor {
                     const serverError = err.error;
                     let modelstateError = '';
                     if (serverError && typeof serverError === 'object') {
-                        for (const key in serverError) {
+                        console.log('objeservererrorct', serverError)
+                        console.log('objerorct', serverError["errors"]);
+                        for (const key in serverError["errors"]) {
                             if (serverError[key]) {
                                 modelstateError += serverError[key] + '\n';
+                                console.log('object', modelstateError)
                             }
                         }
                     }

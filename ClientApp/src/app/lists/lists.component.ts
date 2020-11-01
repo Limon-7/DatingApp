@@ -34,6 +34,7 @@ export class ListsComponent implements OnInit {
       this.pagination.iteamsPerPage, null, this.likesParam).subscribe((res: PaginatedResult<User>) => {
         this.user = res.result;
         this.pagination = res.pagination;
+        console.log('User', this.user);
       }, err => {
         this.alertify.error(err);
       });

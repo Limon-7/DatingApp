@@ -2,9 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { AuthService } from '../_services/auth.service';
 import { FormGroup, FormControl, Validators, FormBuilder, AbstractControl, ValidationErrors } from '@angular/forms';
 import { UsernameValidators } from '../_validators/username.validators';
-import { Observable } from 'rxjs';
-import { UserService } from '../_services/user.service';
-import { debounceTime, map } from 'rxjs/operators';
+
 import { BsDatepickerConfig } from 'ngx-bootstrap';
 import { User } from '../_models/user';
 import { AlertifyService } from '../_services/alertify.service';
@@ -19,6 +17,7 @@ export class RegisterComponent implements OnInit {
   @Output() cancleRegisterMode = new EventEmitter();
   user: User;
   registerForm: FormGroup;
+  errorMessage:any;
   bsConfig: Partial<BsDatepickerConfig>;
 
   constructor(private authservice: AuthService, private fb: FormBuilder,
@@ -77,7 +76,10 @@ export class RegisterComponent implements OnInit {
       this.authservice.register(this.user).subscribe(() => {
         this.alertify.success('Registration is successful');
       }, err => {
-        this.alertify.error(err);
+        // this.errorMessage=err;
+        
+        // this.alertify.error(err);
+        console.log('err', JSON.stringify(err));
       }, () => {
         this.authservice.login(this.user).subscribe(() => {
           this.router.navigate(['/members']);
@@ -87,7 +89,7 @@ export class RegisterComponent implements OnInit {
   }
   cancle() {
     this.cancleRegisterMode.emit(false);
-    console.log('cancled');
+    
   }
 
 }

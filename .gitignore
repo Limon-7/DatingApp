@@ -1,26 +1,35 @@
+bin/
+obj/
+*.db
+.vscode
+*db-shm
+*db-wal
+
+# client app
+
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # compiled output
-/dist
-/tmp
-/out-tsc
+/ClientApp/dist
+/ClientApp/tmp
+/ClientApp/out-tsc
 # Only exists if Bazel was run
-/bazel-out
+/ClientApp/bazel-out
 
 # dependencies
-/node_modules
+/ClientApp/node_modules
 
 # profiling files
 chrome-profiler-events*.json
 speed-measure-plugin*.json
 
 # IDEs and editors
-/.idea
+/ClientApp/.idea
 .project
 .classpath
 .c9/
 *.launch
-.settings/
+/ClientApp/.settings/
 *.sublime-workspace
 
 # IDE - VSCode
@@ -32,14 +41,14 @@ speed-measure-plugin*.json
 .history/*
 
 # misc
-/.sass-cache
-/connect.lock
-/coverage
-/libpeerconnection.log
+/ClientApp/.sass-cache
+/ClientApp/connect.lock
+/ClientApp/coverage
+/ClientApp/libpeerconnection.log
 npm-debug.log
 yarn-error.log
 testem.log
-/typings
+/ClientApp/typings
 
 # System Files
 .DS_Store

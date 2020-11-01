@@ -9,8 +9,9 @@ namespace DatingApp.Helper
 {
     public static class ServicesExtention
     {
-        public static void CustomSerices(this IServiceCollection services){
-            services.AddCors();
+        public static void CustomSerices(this IServiceCollection services)
+        {
+
             //cloudinary section
 
             services.AddAutoMapper(typeof(Startup));

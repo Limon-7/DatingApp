@@ -35,12 +35,12 @@ namespace DatingApp.Controllers
             var username = dto.UserName.ToLower();
 
             if (await _authRepository.UserExists(username))
-                return BadRequest("User Name already exists");
+                return BadRequest(new { userNameExists = "Username is already taken" });
 
             var userToCreate = _imapper.Map<User>(dto);
             var createUser = await _authRepository.Register(userToCreate, dto.Password);
-            var userToReturn= _imapper.Map<UserForDetailsDto>(createUser);
-            return CreatedAtRoute("GetUser", new {Controller="User",id=createUser.Id},userToReturn);
+            var userToReturn = _imapper.Map<UserForDetailsDto>(createUser);
+            return CreatedAtRoute("GetUser", new { Controller = "User", id = createUser.Id }, userToReturn);
         }
         [HttpPost("login")]
         //Reuse Register dto 
@@ -67,7 +67,7 @@ namespace DatingApp.Controllers
             };
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = tokenHandler.CreateToken(tokenDiscriptor);
-            var userphoto= _imapper.Map<UserForListDto>(userFromRepo);
+            var userphoto = _imapper.Map<UserForListDto>(userFromRepo);
             return Ok(new
             {
                 token = tokenHandler.WriteToken(token),
@@ -79,10 +79,10 @@ namespace DatingApp.Controllers
         public async Task<IActionResult> checkUserName(string username)
         {
             //var getuser = username.ToLower();
-            var user= await _authRepository.UserExists(username);
-            if(user)
+            var user = await _authRepository.UserExists(username);
+            if (user)
             {
-                return BadRequest(new 
+                return BadRequest(new
                 {
                     username
                 });
@@ -91,6 +91,20 @@ namespace DatingApp.Controllers
             {
                 Message = username
             });
+        }
+
+        [AcceptVerbs("Get", "Post")]
+        public async Task<IActionResult> IsEmailAlreadyTake(string email)
+        {
+            var user = await _authRepository.UserAlreadyExists(email);
+            if (user == null)
+            {
+                return Json(true);
+            }
+            else
+            {
+                return Json($"{email} is already in use");
+            }
         }
 
     }
