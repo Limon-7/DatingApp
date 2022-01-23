@@ -1,5 +1,7 @@
 import { BrowserModule, HammerGestureConfig, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 import { NgModule, Injectable } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BsDropdownModule, TabsModule, BsDatepickerModule, PaginationModule, ButtonsModule } from 'ngx-bootstrap';
 import { appRoutes } from './routes';
@@ -35,14 +37,15 @@ import { PhotoEditorComponent } from './members/photo-editor/photo-editor.compon
 import { ListResolver } from './_resolver/list.resolver';
 
 
+
 export function tokenGetter() {
    return localStorage.getItem('token');
 }
 @Injectable()
-export class CustomHammerConfig extends HammerGestureConfig  {
+export class CustomHammerConfig extends HammerGestureConfig {
    overrides = {
-       pinch: { enable: false },
-       rotate: { enable: false }
+      pinch: { enable: false },
+      rotate: { enable: false }
    };
 }
 @NgModule({
@@ -58,10 +61,11 @@ export class CustomHammerConfig extends HammerGestureConfig  {
       MemberDetailedComponent,
       MemberEditComponent,
       PhotoEditorComponent,
-      TimeAgoPipe
+      // TimeAgoPipe
    ],
    imports: [
       BrowserModule,
+      CommonModule,
       HttpClientModule,
       FormsModule,
       ReactiveFormsModule,
@@ -83,10 +87,13 @@ export class CustomHammerConfig extends HammerGestureConfig  {
          }
       })
    ],
+   exports: [
+      // TimeAgoPipe
+   ],
    providers: [
       {
-         provide: HAMMER_GESTURE_CONFIG, useClass: CustomHammerConfig 
-     },
+         provide: HAMMER_GESTURE_CONFIG, useClass: CustomHammerConfig
+      },
       AuthService,
       ErrorInterceptorProvider,
       AlertifyService,

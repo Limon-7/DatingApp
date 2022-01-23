@@ -18,8 +18,8 @@ export class ListsComponent implements OnInit {
   likesParam: string;
   pageSizeOptions = [{ value: 3, display: 3 }, { value: 10, display: 10 }, { value: 20, display: 20 }];
 
-  constructor(private authService: AuthService, private userService: UserService,
-    private route: ActivatedRoute, private alertify: AlertifyService) { }
+  constructor(public authService: AuthService, public userService: UserService,
+    public route: ActivatedRoute, public alertify: AlertifyService) { }
 
   ngOnInit() {
     this.route.data.subscribe(data => {
