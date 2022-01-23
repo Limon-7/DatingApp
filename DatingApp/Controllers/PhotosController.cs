@@ -22,7 +22,7 @@ namespace DatingApp.Controllers
         private readonly IUserRepository _userRepo;
         private readonly IMapper _imapper;
         private readonly IOptions<CloudinarySettings> _cloudinaryConfig;
-        private Cloudinary _cloudinary;
+        private readonly Cloudinary _cloudinary;
 
         public PhotosController(IUserRepository userRepo, IMapper imapper, IOptions<CloudinarySettings> cloudinaryConfig)
         {
@@ -30,7 +30,7 @@ namespace DatingApp.Controllers
             _imapper = imapper;
             _cloudinaryConfig = cloudinaryConfig;
 
-            Account account = new Account(
+            Account account = new(
                 _cloudinaryConfig.Value.CloudName,
                 _cloudinaryConfig.Value.ApiKey,
                 _cloudinaryConfig.Value.ApiSecret
@@ -57,17 +57,15 @@ namespace DatingApp.Controllers
             var uploadResult = new ImageUploadResult();
             if (file.Length > 0)
             {
-                using (var stream = file.OpenReadStream())
-                {
-                    var uploadParams = new ImageUploadParams()
-                    {
-                        File = new FileDescription(file.Name, stream),
-                        Transformation = new Transformation().Width(500).Height(500).Crop("fit")
-                    };
-                    uploadResult = _cloudinary.Upload(uploadParams);
-                }
-            }
-            dto.Url = uploadResult.Uri.ToString();
+				using var stream = file.OpenReadStream();
+				var uploadParams = new ImageUploadParams()
+				{
+					File = new FileDescription(file.Name, stream),
+					Transformation = new Transformation().Width(500).Height(500).Crop("fit")
+				};
+				uploadResult = _cloudinary.Upload(uploadParams);
+			}
+            dto.Url = uploadResult.Url.ToString();
             dto.PublicId = uploadResult.PublicId;
             var photo = _imapper.Map<Photo>(dto);
             if (!user.Photos.Any(u => u.IsMain))

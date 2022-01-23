@@ -19,7 +19,6 @@ namespace DatingApp
 {
     public class Startup
     {
-        readonly string MyPolicy = "_myPolicy";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
