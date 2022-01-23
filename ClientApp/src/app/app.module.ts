@@ -1,5 +1,5 @@
 import { BrowserModule, HammerGestureConfig, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, Injectable } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BsDropdownModule, TabsModule, BsDatepickerModule, PaginationModule, ButtonsModule } from 'ngx-bootstrap';
 import { appRoutes } from './routes';
@@ -38,6 +38,7 @@ import { ListResolver } from './_resolver/list.resolver';
 export function tokenGetter() {
    return localStorage.getItem('token');
 }
+@Injectable()
 export class CustomHammerConfig extends HammerGestureConfig  {
    overrides = {
        pinch: { enable: false },
