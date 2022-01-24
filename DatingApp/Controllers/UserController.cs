@@ -27,7 +27,7 @@ namespace DatingApp.Controllers
             _mapper = mapper;
         }
         [HttpGet]
-        public async Task<IActionResult> GetUsers([FromQuery]UserParams userParams)
+        public async Task<IActionResult> GetUsers([FromQuery] UserParams userParams)
         {
             var searchUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
             var userFromRepo = await _userRepo.GetUserById(searchUserId);
@@ -44,6 +44,7 @@ namespace DatingApp.Controllers
         [HttpGet("{id}", Name = "GetUser")]
         public async Task<IActionResult> GetUserById(int id)
         {
+            // var user = await _userRepo.GetUserByUserName(userName);
             var user = await _userRepo.GetUserById(id);
             var userToReturn = _mapper.Map<UserForDetailsDto>(user);
             return Ok(userToReturn);

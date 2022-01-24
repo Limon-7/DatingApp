@@ -113,5 +113,12 @@ namespace DatingApp.Data
         {
             return await _context.SaveChangesAsync() > 0;
         }
+
+        public async Task<User> GetUserByUserName(string userName)
+        {
+            return await _context.Users
+                 .Where(x => x.UserName == userName)
+                 .SingleOrDefaultAsync();
+        }
     }
 }

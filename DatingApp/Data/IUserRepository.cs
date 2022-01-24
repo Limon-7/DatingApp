@@ -9,6 +9,8 @@ namespace DatingApp.Data
     {
         Task<PageList<User>> GetUsers(UserParams userParams);
         Task<User> GetUserById(int id);
+
+        Task<User> GetUserByUserName(string userName);
         Task<bool> SaveAll();
         Task<Photo> GetPhoto(int id);
         Task<Photo> GetMainPhoto(int userId);
