@@ -3,8 +3,11 @@ import { User } from 'src/app/_models/user';
 import { ActivatedRoute } from '@angular/router';
 import { AlertifyService } from 'src/app/_services/alertify.service';
 import { NgForm } from '@angular/forms';
-import { UserService } from 'src/app/_services/user.service';
-import { AuthService } from 'src/app/_services/auth.service';
+import { IMember } from 'src/app/shared/models/iMember';
+import { AccountService } from 'src/app/shared/services/account.service';
+import { MemberService } from 'src/app/shared/services/member.service';
+import { take } from 'rxjs/operators';
+import { IUser } from 'src/app/shared/models/iUser';
 
 @Component({
   selector: 'app-member-edit',
@@ -13,7 +16,8 @@ import { AuthService } from 'src/app/_services/auth.service';
 })
 export class MemberEditComponent implements OnInit {
   @ViewChild('editForm') editForm: NgForm;
-  user: User;
+  member: IMember
+  user: IUser;
   photoUrl: string;
 
   @HostListener('window:beforeunload', ['$event'])
@@ -23,25 +27,28 @@ export class MemberEditComponent implements OnInit {
     }
   }
 
-  constructor(private route: ActivatedRoute, private alertify: AlertifyService,
-    private userServices: UserService, private authservice: AuthService) { }
+  constructor(private alertify: AlertifyService,
+    private accountService: AccountService, private memberService: MemberService,) {
+    this.accountService.currentUserObservable$.pipe(take(1)).subscribe(user => this.user = user);
+  }
 
   ngOnInit() {
-    this.route.data.subscribe(deta => {
-      // tslint:disable-next-line: no-string-literal
-      this.user = deta['user'];
-    });
-    this.authservice.currentPhotoUrl.subscribe(p => this.photoUrl = p);
+    this.loadMember();
+  }
+  loadMember() {
+    this.memberService.getMember(this.user.id).subscribe(member => {
+      this.member = member;
+    })
   }
 
   updateUser() {
-    this.userServices.updateUser(this.authservice.decodedToken.nameid, this.user).subscribe(obserable => {
-      this.alertify.success('You profile is update successfully');
-      this.editForm.reset(this.user);
-    }, err => {
-      this.alertify.error(err);
-    });
+    this.memberService.updateMember(this.user.id, this.member).subscribe(() => {
+      this.alertify.success('Profile updated successfully');
+      this.editForm.reset(this.member);
+    })
+
   }
+
   updatePhoto(photoUrl) {
     this.user.photoUrl = photoUrl;
   }

@@ -1,35 +1,35 @@
-<div class="container mt-5">
+<div class="container mt-5" *ngIf="member">
   <div class="row">
-    <h1>{{ user.knownAs }}'s Profile</h1>
+    <h1>{{ member.knownAs }}'s Profile</h1>
   </div>
-  <div class="row">
+  <div class="row" *ngIf="member">
     <div class="col-sm-4">
       <div class="card">
         <img
-          src="{{ user.photoUrl || '../../../../../assets/user.png' }} "
-          alt="{{ user.knownAs }}"
+          src="{{ member.photoUrl || '../../../../../assets/user.png' }} "
+          alt="{{ member.knownAs }}"
           class="card-img-top img-thumbnail"
         />
         <div class="card-body">
           <div>
             <strong>Location:</strong>
-            <p>{{ user.city }}, {{ user.country }}</p>
+            <p>{{ member.city }}, {{ member.country }}</p>
           </div>
           <div>
             <strong>Gender</strong>
-            <p>{{ user?.gender }}</p>
+            <p>{{ member.gender }}</p>
           </div>
           <div>
             <strong>Age</strong>
-            <p>{{ user?.age }}</p>
+            <p>{{ member.age }}</p>
           </div>
           <div>
             <strong>Last Active</strong>
-            <p>{{ user.lastActive | timeago }}</p>
+            <p>{{ member.lastActive }}</p>
           </div>
           <div>
             <strong>Member Since</strong>
-            <p>{{ user?.created | date: "mediumDate" }}</p>
+            <p>{{ member.created | date: "mediumDate" }}</p>
           </div>
         </div>
         <div class="card-footer">
@@ -43,21 +43,22 @@
     <div class="col-sm-8">
       <div class="tab-panel">
         <tabset class="member-tabset">
-          <tab heading="About {{ user?.knownAs }}">
+          <tab heading="About {{ member.knownAs }}">
             <h4>Description</h4>
-            <p>{{ user?.introduction }}</p>
+            <p>{{ member.introduction }}</p>
             <h4>Looking For</h4>
-            <p>{{ user?.lookingFor }}</p>
+            <p>{{ member.lookingFor }}</p>
           </tab>
           <tab heading="Interests">
             <h4>Interests</h4>
-            <p>{{ user?.interests }}</p>
+            <p>{{ member.interests }}</p>
           </tab>
           <tab heading="Photos">
             <h4>Photos</h4>
             <ngx-gallery
               [options]="galleryOptions"
               [images]="galleryImages"
+              style="display: inline-block; margin-bottom: 20px"
             ></ngx-gallery>
           </tab>
           <tab heading="Message">

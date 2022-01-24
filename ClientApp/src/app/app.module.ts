@@ -13,11 +13,8 @@ import { ListsComponent } from './lists/lists.component';
 import { MessageComponent } from './message/message.component';
 import { MemberListsComponent } from './members/member-lists/member-lists.component';
 import { RouterModule } from '@angular/router';
-import { UserService } from './_services/user.service';
 import { MemberCardComponent } from './members/member-card/member-card.component';
 import { MemberDetailedComponent } from './members/member-detailed/member-detailed.component';
-import { MemberDetailResolver } from './_resolver/member.detail.resolver';
-import { MemberListResolver } from './_resolver/member.list.resolver';
 import { MemberEditComponent } from './members/member-edit/member-edit.component';
 import { MemberEditResolver } from './_resolver/member.edit.resolver';
 import { PreventUnsavedChanges } from './_guards/prevent-unsaved-changes.guard';
@@ -59,9 +56,6 @@ import { JwtInterceptor } from './core/interceptors/jwt.interceptor';
    providers: [
       { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
 
-      UserService,
-      MemberDetailResolver,
-      MemberListResolver,
       MemberEditResolver,
       PreventUnsavedChanges,
       ListResolver

@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { User } from 'src/app/_models/user';
-import { UserService } from 'src/app/_services/user.service';
 import { AlertifyService } from 'src/app/_services/alertify.service';
 import { ActivatedRoute } from '@angular/router';
 import { NgxGalleryOptions, NgxGalleryImage, NgxGalleryAnimation } from '@kolkov/ngx-gallery';
+import { MemberService } from 'src/app/shared/services/member.service';
+import { IMember } from 'src/app/shared/models/iMember';
 
 @Component({
   selector: 'app-member-detailed',
@@ -11,17 +11,13 @@ import { NgxGalleryOptions, NgxGalleryImage, NgxGalleryAnimation } from '@kolkov
   styleUrls: ['./member-detailed.component.css']
 })
 export class MemberDetailedComponent implements OnInit {
-  user: User;
+  member: IMember;
   galleryOptions: NgxGalleryOptions[];
   galleryImages: NgxGalleryImage[];
 
-  constructor(private userService: UserService, private alertify: AlertifyService, private route: ActivatedRoute) { }
+  constructor(private memberService: MemberService, private alertify: AlertifyService, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
-    this.route.data.subscribe(data => {
-      this.user = data.user;
-    });
-
     this.galleryOptions = [
       {
         width: '500px',
@@ -31,21 +27,28 @@ export class MemberDetailedComponent implements OnInit {
         imageAnimation: NgxGalleryAnimation.Slide,
         preview: false
       }
-    ];
-    this.galleryImages = this.getImages();
+    ]
+
+
+    this.loadMember();
   }
-  getImages() {
-    const imageUrl = [];
-    // tslint:disable-next-line: prefer-for-of
-    for (let i = 0; i < this.user.photos.length; i++) {
-      imageUrl.push({
-        small: this.user.photos[i].url,
-        medium: this.user.photos[i].url,
-        big: this.user.photos[i].url,
-        description: this.user.photos[i].description
-      });
+
+  loadMember(): void {
+    this.memberService.getMember(+this.activatedRoute.snapshot.paramMap.get('id')).subscribe((response) => {
+      this.member = response;
+      this.galleryImages = this.getImages();
+    })
+  }
+  getImages(): NgxGalleryImage[] {
+    const imageUrls = [];
+    for (const photo of this.member.photos) {
+      imageUrls.push({
+        small: photo?.url,
+        medium: photo?.url,
+        big: photo?.url
+      })
     }
-    return imageUrl;
+    return imageUrls;
   }
 
 }
