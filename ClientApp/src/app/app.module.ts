@@ -3,13 +3,9 @@ import { NgModule, Injectable } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BsDropdownModule, TabsModule, BsDatepickerModule, PaginationModule, ButtonsModule } from 'ngx-bootstrap';
+
 import { appRoutes } from './routes';
 import { JwtModule } from '@auth0/angular-jwt';
-import { NgxGalleryModule } from 'ngx-gallery';
-import { FileUploadModule } from 'ng2-file-upload';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { TimeAgoPipe } from 'time-ago-pipe';
 
 
 import { AppComponent } from './app.component';
@@ -35,6 +31,7 @@ import { MemberEditResolver } from './_resolver/member.edit.resolver';
 import { PreventUnsavedChanges } from './_guards/prevent-unsaved-changes.guard';
 import { PhotoEditorComponent } from './members/photo-editor/photo-editor.component';
 import { ListResolver } from './_resolver/list.resolver';
+import { SharedModule } from './shared/shared.module';
 
 
 
@@ -61,34 +58,26 @@ export class CustomHammerConfig extends HammerGestureConfig {
       MemberDetailedComponent,
       MemberEditComponent,
       PhotoEditorComponent,
-      // TimeAgoPipe
    ],
    imports: [
       BrowserModule,
       CommonModule,
       HttpClientModule,
+      SharedModule,
       FormsModule,
       ReactiveFormsModule,
-      ButtonsModule.forRoot(),
-      BsDropdownModule.forRoot(),
-      TabsModule.forRoot(),
-      PaginationModule.forRoot(),
-      BrowserAnimationsModule,
-      BsDatepickerModule.forRoot(),
-      NgxGalleryModule,
-      FileUploadModule,
+
       RouterModule.forRoot(appRoutes),
       JwtModule.forRoot({
          config: {
             // tslint:disable-next-line: object-literal-shorthand
             tokenGetter: tokenGetter,
-            whitelistedDomains: ['localhost:5000'],
-            blacklistedRoutes: ['localhost:3000']
+            // whitelistedDomains: ['localhost:5000'],
+            // blacklistedRoutes: ['localhost:3000']
          }
       })
    ],
    exports: [
-      // TimeAgoPipe
    ],
    providers: [
       {

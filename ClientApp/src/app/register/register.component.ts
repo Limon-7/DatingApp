@@ -3,7 +3,7 @@ import { AuthService } from '../_services/auth.service';
 import { FormGroup, FormControl, Validators, FormBuilder, AbstractControl, ValidationErrors } from '@angular/forms';
 import { UsernameValidators } from '../_validators/username.validators';
 
-import { BsDatepickerConfig } from 'ngx-bootstrap';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { User } from '../_models/user';
 import { AlertifyService } from '../_services/alertify.service';
 import { Router } from '@angular/router';
@@ -17,11 +17,11 @@ export class RegisterComponent implements OnInit {
   @Output() cancleRegisterMode = new EventEmitter();
   user: User;
   registerForm: FormGroup;
-  errorMessage:any;
+  errorMessage: any;
   bsConfig: Partial<BsDatepickerConfig>;
 
   constructor(private authservice: AuthService, private fb: FormBuilder,
-              private alertify: AlertifyService, private router: Router) { }
+    private alertify: AlertifyService, private router: Router) { }
 
   ngOnInit() {
     this.bsConfig = {
@@ -32,7 +32,7 @@ export class RegisterComponent implements OnInit {
 
   createRegisterForm() {
     this.registerForm = this.fb.group({
-      gender: ['', ],
+      gender: ['',],
       userName: ['', [
         Validators.required, Validators.minLength(3), Validators.maxLength(8),
         UsernameValidators.cannotContainSpace
@@ -77,7 +77,7 @@ export class RegisterComponent implements OnInit {
         this.alertify.success('Registration is successful');
       }, err => {
         // this.errorMessage=err;
-        
+
         // this.alertify.error(err);
         console.log('err', JSON.stringify(err));
       }, () => {
@@ -89,7 +89,7 @@ export class RegisterComponent implements OnInit {
   }
   cancle() {
     this.cancleRegisterMode.emit(false);
-    
+
   }
 
 }

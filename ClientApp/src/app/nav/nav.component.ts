@@ -19,7 +19,8 @@ export class NavComponent implements OnInit {
     this.authservice.currentPhotoUrl.subscribe(p => this.photoUrl = p);
   }
   login(f) {
-    this.authservice.login(this.model).subscribe(() => {
+    this.authservice.login(this.model).subscribe((res) => {
+      console.log('Login:', res)
       this.alertifyService.success('login sucessfull');
     }, err => {
       this.alertifyService.error(err);

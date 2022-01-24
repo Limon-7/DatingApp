@@ -1,5 +1,5 @@
 <div class="text-center mt-3">
-  <h2>Your matches - {{ pagination.totalIteams }} found</h2>
+  <h2>Your matches - {{ pagination?.totalIteams }} found</h2>
 </div>
 
 <div class="container mt-5">
@@ -42,13 +42,13 @@
         </option>
       </select>
     </div>
-    <button type="submit" class="btn btn-primary" style="margin-left:10px">
+    <button type="submit" class="btn btn-primary" style="margin-left: 10px">
       Apply Filters
     </button>
     <button
       type="button"
       class="btn btn-info"
-      style="margin-left:10px"
+      style="margin-left: 10px"
       (click)="resetFilters()"
     >
       Reset Filter

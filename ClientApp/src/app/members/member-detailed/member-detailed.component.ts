@@ -3,7 +3,7 @@ import { User } from 'src/app/_models/user';
 import { UserService } from 'src/app/_services/user.service';
 import { AlertifyService } from 'src/app/_services/alertify.service';
 import { ActivatedRoute } from '@angular/router';
-import { NgxGalleryOptions, NgxGalleryImage, NgxGalleryAnimation } from 'ngx-gallery';
+import { NgxGalleryOptions, NgxGalleryImage, NgxGalleryAnimation } from '@kolkov/ngx-gallery';
 
 @Component({
   selector: 'app-member-detailed',
@@ -37,7 +37,7 @@ export class MemberDetailedComponent implements OnInit {
   getImages() {
     const imageUrl = [];
     // tslint:disable-next-line: prefer-for-of
-    for ( let i = 0; i < this.user.photos.length; i++) {
+    for (let i = 0; i < this.user.photos.length; i++) {
       imageUrl.push({
         small: this.user.photos[i].url,
         medium: this.user.photos[i].url,

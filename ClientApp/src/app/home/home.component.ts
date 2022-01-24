@@ -9,13 +9,14 @@ import { AuthService } from '../_services/auth.service';
 })
 export class HomeComponent implements OnInit {
 
-  toggle:boolean=false;
+  toggle: boolean = false;
   registerMode = false;
-  constructor(private http: HttpClient,private authService: AuthService) {
-   
+  constructor(private http: HttpClient, public authService: AuthService) {
+
   }
 
   ngOnInit() {
+    console.log("current-user:", this.authService.currentUser);
   }
   registerToggle() {
     this.registerMode = true;
@@ -23,7 +24,7 @@ export class HomeComponent implements OnInit {
   cancelRegister(registerMode: boolean) {
     this.registerMode = false;
   }
-  handleClick(){
-    this.toggle=!this.toggle;
+  handleClick() {
+    this.toggle = !this.toggle;
   }
 }
