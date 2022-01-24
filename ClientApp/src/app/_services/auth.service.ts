@@ -12,7 +12,7 @@ import { User } from '../_models/user';
 export class AuthService {
   baseUrl = environment.apiUrl + 'auth';
   jwtHelper = new JwtHelperService();
-  decodedToken: any ;
+  decodedToken: any;
   currentUser: User;
   photoUrl = new BehaviorSubject<string>('../../assets/user.png');
   currentPhotoUrl = this.photoUrl.asObservable();
@@ -43,7 +43,7 @@ export class AuthService {
     );
   }
   register(user: User) {
-   return this.http.post(this.baseUrl + '/' + 'register', user);
+    return this.http.post(this.baseUrl + '/' + 'register', user);
   }
   loggedIn() {
     const token = localStorage.getItem('token');

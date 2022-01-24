@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using DatingApp.Data;
 using DatingApp.Dtos;
+using DatingApp.Interfaces;
 using DatingApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -21,10 +23,12 @@ namespace DatingApp.Controllers
         private readonly IAuthRepository _authRepository;
         private readonly IConfiguration _config;
         private readonly IMapper _imapper;
+        private readonly ITokenService _tokenService;
 
-        public AuthController(IAuthRepository authRepository, IConfiguration config, IMapper imapper)
+        public AuthController(IAuthRepository authRepository, IConfiguration config, IMapper imapper, ITokenService tokenService)
         {
             _imapper = imapper;
+            _tokenService = tokenService;
             _authRepository = authRepository;
             _config = config;
         }
@@ -37,41 +41,36 @@ namespace DatingApp.Controllers
             if (await _authRepository.UserExists(username))
                 return BadRequest(new { userNameExists = "Username is already taken" });
 
-            var userToCreate = _imapper.Map<User>(dto);
-            var createUser = await _authRepository.Register(userToCreate, dto.Password);
-            var userToReturn = _imapper.Map<UserForDetailsDto>(createUser);
-            return CreatedAtRoute("GetUser", new { Controller = "User", id = createUser.Id }, userToReturn);
+            var user = _imapper.Map<User>(dto);
+            var createUser = await _authRepository.Register(user, dto.Password);
+
+            return Ok(new UserDto
+            {
+                Username = user.UserName,
+                Token = _tokenService.CreateToken(user),
+                KnownAs = user.KnownAs,
+                Gender = user.Gender
+            });
         }
         [HttpPost("login")]
         //Reuse Register dto 
         public async Task<IActionResult> Login(LoginDto dto)
         {
             // throw new Exception("Computer says no");
-            var userFromRepo = await _authRepository.Login(dto.UserName.ToLower(), dto.Password);
-            if (userFromRepo == null)
+            var user = await _authRepository.Login(dto.UserName.ToLower(), dto.Password);
+            if (user == null)
             {
                 return Unauthorized();
             }
-            var claims = new[]{
-                new Claim(ClaimTypes.NameIdentifier,userFromRepo.Id.ToString()),
-                new Claim(ClaimTypes.Name,userFromRepo.UserName)
-            };
-            //var token=new SymmetricSecurityKey ()
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetSection("AppSettings:Token").Value));
-            var credentiatl = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
-            var tokenDiscriptor = new SecurityTokenDescriptor
+
+            var userphoto = _imapper.Map<UserForListDto>(user);
+            return Ok(new UserDto
             {
-                Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.Now.AddDays(1),
-                SigningCredentials = credentiatl
-            };
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var token = tokenHandler.CreateToken(tokenDiscriptor);
-            var userphoto = _imapper.Map<UserForListDto>(userFromRepo);
-            return Ok(new
-            {
-                token = tokenHandler.WriteToken(token),
-                userphoto
+                Username = user.UserName,
+                Token = _tokenService.CreateToken(user),
+                PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain)?.Url,
+                KnownAs = user.KnownAs,
+                Gender = user.Gender
             });
         }
 

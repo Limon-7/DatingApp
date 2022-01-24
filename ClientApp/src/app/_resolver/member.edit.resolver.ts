@@ -10,7 +10,7 @@ import { AuthService } from '../_services/auth.service';
 @Injectable()
 export class MemberEditResolver implements Resolve<User> {
     constructor(private userServices: UserService, private alertify: AlertifyService,
-                private router: Router, private authService: AuthService) { }
+        private router: Router, private authService: AuthService) { }
     resolve(route: ActivatedRouteSnapshot): Observable<User> {
         return this.userServices.getUserById(this.authService.decodedToken.nameid).pipe(
             catchError(err => {

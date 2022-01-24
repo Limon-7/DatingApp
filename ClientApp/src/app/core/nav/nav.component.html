@@ -1,0 +1,94 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container">
+    <a class="navbar-brand" [routerLink]="['/home']">DattingApp</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul
+        *ngIf="accountService.currentUserObservable$ | async"
+        class="navbar-nav mr-auto"
+      >
+        <li class="nav-item" routerLinkActive="active">
+          <a
+            class="nav-link"
+            [routerLink]="['/members']"
+            [queryParams]="{ pageNumber: 1, pageSize: 5 }"
+            >Matches
+          </a>
+        </li>
+        <li class="nav-item" routerLinkActive="active">
+          <a class="nav-link" [routerLink]="['/lists']">Lists</a>
+        </li>
+
+        <li class="nav-item" routerLinkActive="active">
+          <a class="nav-link" [routerLink]="['/message']">Message</a>
+        </li>
+      </ul>
+    </div>
+    <div
+      class="dropdown"
+      *ngIf="accountService.currentUserObservable$ | async as user"
+      dropdown
+    >
+      <span class="mr-1">
+        <img
+          src="{{ user.photoUrl || '../../../../assets/user.png' }}"
+          alt=""
+        />
+      </span>
+      <a class="dropdown-toggle text-light" dropdownToggle>
+        Welcome {{ user.userName || user.knownAs | titlecase }}
+        <!-- welcome{{model.name}} -->
+      </a>
+      <div class="dropdown-menu mt-3" *dropdownMenu>
+        <a class="dropdown-item" [routerLink]="['/member/edit']"
+          ><i class="fa fa-user"></i> Edit Profile</a
+        >
+        <a class="dropdown-item" (click)="accountService.logout()"
+          ><i class="fa fa-sign-out"></i> Logout</a
+        >
+      </div>
+    </div>
+
+    <form
+      class="form-inline my-2 my-lg-0"
+      #f="ngForm"
+      (ngSubmit)="login(f)"
+      *ngIf="(accountService.currentUserObservable$ | async) == null"
+    >
+      <input
+        class="form-control mr-sm-2"
+        type="text"
+        placeholder="UserName"
+        [(ngModel)]="model.username"
+        name="username"
+        required
+      />
+      <input
+        class="form-control mr-sm-2"
+        type="password"
+        placeholder="Password"
+        [(ngModel)]="model.password"
+        required
+        name="password"
+      />
+      <button
+        class="btn btn-primary my-2 my-sm-0"
+        type="submit"
+        [disabled]="!f.valid"
+      >
+        Login
+      </button>
+    </form>
+  </div>
+</nav>

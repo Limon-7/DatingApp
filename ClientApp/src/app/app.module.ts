@@ -10,10 +10,11 @@ import { JwtModule } from '@auth0/angular-jwt';
 
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
-import { NavComponent } from './nav/nav.component';
+
+
 import { AuthService } from './_services/auth.service';
-import { HomeComponent } from './home/home.component';
-import { RegisterComponent } from './register/register.component';
+
+
 import { ErrorInterceptorProvider } from './_services/error.interceptor';
 import { AlertifyService } from './_services/alertify.service';
 import { ListsComponent } from './lists/lists.component';
@@ -32,6 +33,8 @@ import { PreventUnsavedChanges } from './_guards/prevent-unsaved-changes.guard';
 import { PhotoEditorComponent } from './members/photo-editor/photo-editor.component';
 import { ListResolver } from './_resolver/list.resolver';
 import { SharedModule } from './shared/shared.module';
+import { CoreModule } from './core/core.module';
+import { AccountModule } from './account/account.module';
 
 
 
@@ -48,9 +51,7 @@ export class CustomHammerConfig extends HammerGestureConfig {
 @NgModule({
    declarations: [
       AppComponent,
-      NavComponent,
-      HomeComponent,
-      RegisterComponent,
+
       ListsComponent,
       MessageComponent,
       MemberListsComponent,
@@ -63,6 +64,7 @@ export class CustomHammerConfig extends HammerGestureConfig {
       BrowserModule,
       CommonModule,
       HttpClientModule,
+      CoreModule,
       SharedModule,
       FormsModule,
       ReactiveFormsModule,
@@ -75,7 +77,8 @@ export class CustomHammerConfig extends HammerGestureConfig {
             // whitelistedDomains: ['localhost:5000'],
             // blacklistedRoutes: ['localhost:3000']
          }
-      })
+      }),
+      AccountModule
    ],
    exports: [
    ],

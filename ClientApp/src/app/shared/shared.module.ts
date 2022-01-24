@@ -5,19 +5,24 @@ import { FileUploadModule } from 'ng2-file-upload';
 import { NgxGalleryModule } from '@kolkov/ngx-gallery';
 import { TimeagoModule } from 'ngx-timeago';
 
-import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { BsDropdownConfig, BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 
 
 
 
 @NgModule({
-  declarations: [],
+  declarations: [
+  ],
   imports: [
     CommonModule,
+    ReactiveFormsModule,
+    FormsModule,
     FileUploadModule,
 
 
@@ -29,6 +34,8 @@ import { ButtonsModule } from 'ngx-bootstrap/buttons';
 
   ],
   exports: [
+    FormsModule,
+
     FileUploadModule,
     NgxGalleryModule,
     TimeagoModule,
@@ -38,6 +45,10 @@ import { ButtonsModule } from 'ngx-bootstrap/buttons';
     BsDatepickerModule,
     PaginationModule,
     ButtonsModule,
-  ]
+
+    // components
+
+  ],
+  providers: [{ provide: BsDropdownConfig, useValue: { autoClose: true } }]
 })
 export class SharedModule { }
