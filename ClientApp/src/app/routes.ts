@@ -3,7 +3,7 @@ import { HomeComponent } from './account/home/home.component';
 import { MemberListsComponent } from './members/member-lists/member-lists.component';
 import { MessageComponent } from './message/message.component';
 import { ListsComponent } from './lists/lists.component';
-import { AuthGuard } from './_guards/auth.guard';
+import { AuthGuard } from './core/guards/auth.guard';
 import { MemberDetailedComponent } from './members/member-detailed/member-detailed.component';
 import { MemberDetailResolver } from './_resolver/member.detail.resolver';
 import { MemberListResolver } from './_resolver/member.list.resolver';

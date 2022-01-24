@@ -18,6 +18,7 @@ obj/
 
 # dependencies
 /ClientApp/node_modules
+/ClientApp/.angular
 
 # profiling files
 chrome-profiler-events*.json
