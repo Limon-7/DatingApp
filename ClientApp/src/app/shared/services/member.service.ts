@@ -20,11 +20,11 @@ export class MemberService {
   getMembers(): Observable<IMember[]> {
     return this.http.get<IMember[]>(`${this.baseUrl}user`);
   }
-  getMember(id: number): Observable<IMember> {
-    return this.http.get<IMember>(`${this.baseUrl}user/${id}`);
+  getMember(userName: string): Observable<IMember> {
+    return this.http.get<IMember>(`${this.baseUrl}user/${userName}`);
   }
 
-  updateMember(id: number, model: IMember) {
-    return this.http.put(`${this.baseUrl}user/${id}`, model);
+  updateMember(model: IMember) {
+    return this.http.put(`${this.baseUrl}user`, model);
   }
 }

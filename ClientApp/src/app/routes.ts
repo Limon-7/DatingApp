@@ -20,7 +20,7 @@ export const appRoutes: Routes = [
                 path: 'members', component: MemberListsComponent
             },
             {
-                path: 'members/:id', component: MemberDetailedComponent
+                path: 'members/:userName', component: MemberDetailedComponent
             },
             {
                 path: 'member/edit', component: MemberEditComponent,
