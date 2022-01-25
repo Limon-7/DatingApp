@@ -47,7 +47,7 @@ namespace DatingApp.Controllers
             return Ok(new UserDto
             {
                 Id = createUser.Id,
-                Username = user.UserName,
+                UserName = user.UserName,
                 Token = _tokenService.CreateToken(user),
                 KnownAs = user.KnownAs,
                 Gender = user.Gender
@@ -68,7 +68,7 @@ namespace DatingApp.Controllers
             return Ok(new UserDto
             {
                 Id = user.Id,
-                Username = user.UserName,
+                UserName = user.UserName,
                 Token = _tokenService.CreateToken(user),
                 PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain)?.Url,
                 KnownAs = user.KnownAs,

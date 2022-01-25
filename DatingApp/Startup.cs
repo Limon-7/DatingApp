@@ -36,7 +36,7 @@ namespace DatingApp
             services.AddTransient<ITokenService, TokenService>();
 
             services.AddDbContext<DataContext>(x => x.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
-
+            services.AddAutoMapper((typeof(AutoMapperProfiles).Assembly));
             services.AddCors(options =>
             {
                 options.AddDefaultPolicy(x =>

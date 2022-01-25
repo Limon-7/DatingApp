@@ -2,7 +2,8 @@ using DatingApp.Models;
 
 namespace DatingApp.Dtos
 {
-    public class UserForEditDto{
+    public class MemberEditDto
+    {
         public string Introduction { get; set; }
         public string LookingFor { get; set; }
         public string Interests { get; set; }

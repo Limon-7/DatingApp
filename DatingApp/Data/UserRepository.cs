@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using DatingApp.Dtos;
 using DatingApp.Helper;
 using DatingApp.Models;
 using Microsoft.EntityFrameworkCore;
@@ -10,8 +13,11 @@ namespace DatingApp.Data
 {
     public class UserRepository : GenericRepository<User>, IUserRepository
     {
-        public UserRepository(DataContext context) : base(context)
+        private readonly IMapper _mapper;
+
+        public UserRepository(DataContext context, IMapper mapper) : base(context)
         {
+            _mapper = mapper;
 
         }
 
@@ -114,10 +120,11 @@ namespace DatingApp.Data
             return await _context.SaveChangesAsync() > 0;
         }
 
-        public async Task<User> GetUserByUserName(string userName)
+        public async Task<MemberDto> GetUserByUserName(string userName)
         {
             return await _context.Users
                  .Where(x => x.UserName == userName)
+                 .ProjectTo<MemberDto>(_mapper.ConfigurationProvider)
                  .SingleOrDefaultAsync();
         }
     }

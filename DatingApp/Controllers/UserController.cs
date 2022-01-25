@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using DatingApp.Data;
 using DatingApp.Dtos;
+using DatingApp.Extentions;
 using DatingApp.Helper;
 using DatingApp.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -12,8 +13,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DatingApp.Controllers
 {
-    [ServiceFilter(typeof(LogUserActivity))]
-    [Authorize]
+    // [ServiceFilter(typeof(LogUserActivity))]
+    // [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class UserController : Controller
@@ -29,9 +30,9 @@ namespace DatingApp.Controllers
         [HttpGet]
         public async Task<IActionResult> GetUsers([FromQuery] UserParams userParams)
         {
-            var searchUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-            var userFromRepo = await _userRepo.GetUserById(searchUserId);
-            userParams.UserId = searchUserId;
+            // var searchUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var userFromRepo = await _userRepo.GetUserById(User.GetUserId());
+            userParams.UserId = User.GetUserId();
             if (string.IsNullOrEmpty(userParams.Gender))
             {
                 userParams.Gender = userFromRepo.Gender == "Male" ? "Female" : "Male";
@@ -41,25 +42,23 @@ namespace DatingApp.Controllers
             Response.AddPagination(users.CurrentPage, users.PageSize, users.TotalCount, users.TotalPage);
             return Ok(usersToReturn);
         }
-        [HttpGet("{id}", Name = "GetUser")]
-        public async Task<IActionResult> GetUserById(int id)
+        [HttpGet("{userName}", Name = "GetUser")]
+        public async Task<ActionResult<MemberDto>> GetUserById(string userName)
         {
-            // var user = await _userRepo.GetUserByUserName(userName);
-            var user = await _userRepo.GetUserById(id);
-            var userToReturn = _mapper.Map<UserForDetailsDto>(user);
-            return Ok(userToReturn);
+            var user = await _userRepo.GetUserByUserName(userName);
+            // var user = await _userRepo.GetUserById(id);
+            // var userToReturn = _mapper.Map<UserForDetailsDto>(user);
+            return Ok(user);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUser(int id, UserForEditDto dto)
+        [HttpPut]
+        public async Task<IActionResult> UpdateUser(MemberEditDto dto)
         {
-            if (id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
-                return Unauthorized();
-            var user = await _userRepo.GetUserById(id);
+            var user = await _userRepo.GetUserById(User.GetUserId());
             _mapper.Map(dto, user);
             if (await _userRepo.SaveAll())
                 return NoContent();
-            // throw new System.Exception($"Updating user {id} failed on save");
+
             return BadRequest();
         }
         [HttpPost("{id}/like/{recipientId}")]
