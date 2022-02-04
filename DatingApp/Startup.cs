@@ -4,6 +4,7 @@ using System.Text;
 using DatingApp.Data;
 using DatingApp.Helper;
 using DatingApp.Interfaces;
+using DatingApp.Options;
 using DatingApp.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -34,8 +35,10 @@ namespace DatingApp
         {
 
             services.AddTransient<ITokenService, TokenService>();
+            services.AddScoped<IPhotoService, PhotoService>();
 
             services.AddDbContext<DataContext>(x => x.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddAutoMapper((typeof(AutoMapperProfiles).Assembly));
             services.AddCors(options =>
             {
@@ -52,7 +55,13 @@ namespace DatingApp
                 });
 
             services.CustomSerices();
+            // configure cloudinary
             services.Configure<CloudinarySettings>(Configuration.GetSection("CloudinarySettings"));
+
+            /* We can craete  */
+            // var cloudinarySettings = new CloudinarySettings();
+            // Configuration.Bind(nameof(CloudinarySettings), cloudinarySettings);
+            /* We can craete  */
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(option =>
             {
                 option.TokenValidationParameters = new TokenValidationParameters
@@ -67,10 +76,12 @@ namespace DatingApp
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
             });
+
+            services.AddTransient<Seed>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, Seed seed)
         {
 
             if (env.IsDevelopment())
@@ -100,7 +111,7 @@ namespace DatingApp
 
             app.UseRouting();
 
-            // seed.SeedUsers(); 
+            // seed.SeedUsers();
             app.UseCors(x => x.WithOrigins("http://localhost:4200").AllowAnyHeader().AllowAnyMethod());
             app.UseAuthentication();
             app.UseAuthorization();

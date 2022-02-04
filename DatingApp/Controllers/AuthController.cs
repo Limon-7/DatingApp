@@ -1,9 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using DatingApp.Data;
@@ -12,25 +7,22 @@ using DatingApp.Interfaces;
 using DatingApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
 
 namespace DatingApp.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
-    public class AuthController : Controller
+    [Route("api/[controller]")]
+    public class AuthController : ControllerBase
     {
         private readonly IAuthRepository _authRepository;
-        private readonly IConfiguration _config;
         private readonly IMapper _imapper;
         private readonly ITokenService _tokenService;
 
-        public AuthController(IAuthRepository authRepository, IConfiguration config, IMapper imapper, ITokenService tokenService)
+        public AuthController(IAuthRepository authRepository, IMapper imapper, ITokenService tokenService)
         {
             _imapper = imapper;
             _tokenService = tokenService;
             _authRepository = authRepository;
-            _config = config;
         }
 
         [HttpPost("register")]
@@ -41,7 +33,7 @@ namespace DatingApp.Controllers
             if (await _authRepository.UserExists(username))
                 return BadRequest(new { userNameExists = "Username is already taken" });
 
-            var user = _imapper.Map<User>(dto);
+            var user = _imapper.Map<AppUser>(dto);
             var createUser = await _authRepository.Register(user, dto.Password);
 
             return Ok(new UserDto
@@ -54,17 +46,14 @@ namespace DatingApp.Controllers
             });
         }
         [HttpPost("login")]
-        //Reuse Register dto 
         public async Task<IActionResult> Login(LoginDto dto)
         {
-            // throw new Exception("Computer says no");
             var user = await _authRepository.Login(dto.UserName.ToLower(), dto.Password);
             if (user == null)
             {
                 return Unauthorized();
             }
 
-            var userphoto = _imapper.Map<UserForListDto>(user);
             return Ok(new UserDto
             {
                 Id = user.Id,
@@ -79,7 +68,6 @@ namespace DatingApp.Controllers
         [HttpGet("checkUsername")]
         public async Task<IActionResult> checkUserName(string username)
         {
-            //var getuser = username.ToLower();
             var user = await _authRepository.UserExists(username);
             if (user)
             {
@@ -94,19 +82,19 @@ namespace DatingApp.Controllers
             });
         }
 
-        [AcceptVerbs("Get", "Post")]
-        public async Task<IActionResult> IsEmailAlreadyTake(string email)
-        {
-            var user = await _authRepository.UserAlreadyExists(email);
-            if (user == null)
-            {
-                return Json(true);
-            }
-            else
-            {
-                return Json($"{email} is already in use");
-            }
-        }
+        //[AcceptVerbs("Get", "Post")]
+        //public async Task<IActionResult> IsEmailAlreadyTake(string email)
+        //{
+        //    var user = await _authRepository.UserAlreadyExists(email);
+        //    if (user == null)
+        //    {
+        //        return Json(true);
+        //    }
+        //    else
+        //    {
+        //        return Json($"{email} is already in use");
+        //    }
+        //}
 
     }
 }

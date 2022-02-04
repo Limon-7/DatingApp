@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DatingApp.Data
 {
-    public class AuthRepository : GenericRepository<User>, IAuthRepository
+    public class AuthRepository : GenericRepository<AppUser>, IAuthRepository
     {
         // private readonly DataContext _context;
 
@@ -15,9 +15,9 @@ namespace DatingApp.Data
         {
             // _context = context;
         }
-        public async Task<User> Login(string userName, string password)
+        public async Task<AppUser> Login(string userName, string password)
         {
-            var user = await _context.Users.Include(p => p.Photos).FirstOrDefaultAsync(x => x.UserName.ToLower() == userName.ToLower());
+            var user = await _context.AppUsers.Include(p => p.Photos).FirstOrDefaultAsync(x => x.UserName.ToLower() == userName.ToLower());
             if (user == null)
             {
                 return null;
@@ -43,7 +43,7 @@ namespace DatingApp.Data
             return true;
         }
 
-        public async Task<User> Register(User user, string password)
+        public async Task<AppUser> Register(AppUser user, string password)
         {
             byte[] passwordHash, passwordSalt;
             // CreatePasswordHas(password,  out  passwordhash, passwordsalt);
@@ -63,15 +63,15 @@ namespace DatingApp.Data
 
         public async Task<bool> UserExists(string userName)
         {
-            if (await _context.Users.AnyAsync(x => x.UserName == userName))
+            if (await _context.AppUsers.AnyAsync(x => x.UserName == userName))
             {
                 return true;
             }
             return false;
         }
-        public async Task<User> UserAlreadyExists(string userName)
+        public async Task<AppUser> UserAlreadyExists(string userName)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(x => x.UserName == userName);
+            var user = await _context.AppUsers.FirstOrDefaultAsync(x => x.UserName == userName);
             return user;
 
         }

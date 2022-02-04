@@ -6,12 +6,23 @@ using DatingApp.Models;
 
 namespace DatingApp.Data
 {
-    public interface IUserRepository : IGenericRepository<User>
+    public interface IUserRepository : IGenericRepository<AppUser>
     {
-        Task<PageList<User>> GetUsers(UserParams userParams);
-        Task<User> GetUserById(int id);
+        void Update(AppUser user);
+        Task<IEnumerable<AppUser>> GetUsersAsync();
+        Task<AppUser> GetUserByIdAsync(int id);
+        Task<AppUser> GetUserByUsernameAsync(string username);
+        Task<PageList<MemberDto>> GetMembersAsync(UserParams userParams);
+        Task<MemberDto> GetMemberAsync(string username);
+        Task<string> GetUserGender(string username);
 
-        Task<MemberDto> GetUserByUserName(string userName);
+
+
+        Task<PageList<AppUser>> GetUsers(UserParams userParams);
+        Task<AppUser> GetUserById(int id);
+        Task<AppUser> GetUserByUserName(string userName);
+
+
         Task<bool> SaveAll();
         Task<Photo> GetPhoto(int id);
         Task<Photo> GetMainPhoto(int userId);

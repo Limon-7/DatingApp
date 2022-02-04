@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DatingApp.Data
 {
-    public class UserRepository : GenericRepository<User>, IUserRepository
+    public class UserRepository : GenericRepository<AppUser>, IUserRepository
     {
         private readonly IMapper _mapper;
 
@@ -26,6 +26,7 @@ namespace DatingApp.Data
             _context.Add(entity);
         }
 
+        // Safe=> removed
         public void DeletePhoto(Photo photo)
         {
             _context.Remove(photo);
@@ -47,15 +48,15 @@ namespace DatingApp.Data
             return photo;
         }
 
-        public async Task<User> GetUserById(int id)
+        public async Task<AppUser> GetUserById(int id)
         {
-            var user = await _context.Users.Include(p => p.Photos).FirstOrDefaultAsync(u => u.Id == id);
+            var user = await _context.AppUsers.Include(p => p.Photos).FirstOrDefaultAsync(u => u.Id == id);
             return user;
         }
 
-        public async Task<PageList<User>> GetUsers(UserParams userParams)
+        public async Task<PageList<AppUser>> GetUsers(UserParams userParams)
         {
-            var users = _context.Users.Include(p => p.Photos).OrderByDescending(u => u.LastActive).AsQueryable();
+            var users = _context.AppUsers.Include(p => p.Photos).OrderByDescending(u => u.LastActive).AsQueryable();
             users = users.Where(u => u.Id != userParams.UserId);
             users = users.Where(u => u.Gender == userParams.Gender);
             if (userParams.Likers)
@@ -93,13 +94,13 @@ namespace DatingApp.Data
                 }
             }
 
-            return await PageList<User>.CreateAsync(users, userParams.PageNumber, userParams.Pagesize);
+            return await PageList<AppUser>.CreateAsync(users, userParams.PageNumber, userParams.PageSize);
         }
 
         private async Task<IEnumerable<int>> GetUserLikes(int id, bool likers)
         {
             //find  the login user whom he liked or who is being liked by other user
-            var user = await _context.Users
+            var user = await _context.AppUsers
             .Include(l => l.Likers)
             .Include(l => l.Likees)
             .FirstOrDefaultAsync(u => u.Id == id);
@@ -120,12 +121,74 @@ namespace DatingApp.Data
             return await _context.SaveChangesAsync() > 0;
         }
 
-        public async Task<MemberDto> GetUserByUserName(string userName)
+        public async Task<AppUser> GetUserByUserName(string userName)
         {
-            return await _context.Users
+            return await _context.AppUsers
                  .Where(x => x.UserName == userName)
-                 .ProjectTo<MemberDto>(_mapper.ConfigurationProvider)
+                 .ProjectTo<AppUser>(_mapper.ConfigurationProvider)
                  .SingleOrDefaultAsync();
         }
-    }
+
+		public async Task<IEnumerable<AppUser>> GetUsersAsync()
+		{
+            return await _context.AppUsers
+                .Include(p => p.Photos)
+                .ToListAsync();
+        }
+
+		public async Task<AppUser> GetUserByIdAsync(int id)
+		{
+            return await _context.AppUsers.FindAsync(id);
+		}
+
+		public async Task<AppUser> GetUserByUsernameAsync(string username)
+		{
+            return await _context.AppUsers
+               .Include(p => p.Photos)
+               .SingleOrDefaultAsync(x => x.UserName == username);
+        }
+
+		public async Task<PageList<MemberDto>> GetMembersAsync(UserParams userParams)
+		{
+            var query = _context.AppUsers.AsQueryable();
+
+			query = query.Where(u => u.UserName != userParams.CurrentUsername);
+			//query = query.Where(u => u.Gender == userParams.Gender);
+
+			//var minDob = DateTime.Today.AddYears(-userParams.MaxAge - 1);
+			//var maxDob = DateTime.Today.AddYears(-userParams.MinAge);
+
+			//query = query.Where(u => u.DateOfBirth >= minDob && u.DateOfBirth <= maxDob);
+
+			//query = userParams.OrderBy switch
+			//{
+			//    "created" => query.OrderByDescending(u => u.Created),
+			//    _ => query.OrderByDescending(u => u.LastActive)
+			//};
+
+			return await PageList<MemberDto>.CreateAsync(query.ProjectTo<MemberDto>(_mapper
+                .ConfigurationProvider).AsNoTracking(),
+                    userParams.PageNumber, userParams.PageSize);
+        }
+
+		public async Task<MemberDto> GetMemberAsync(string username)
+		{
+            return await _context.AppUsers
+                .Where(x => x.UserName == username)
+                .ProjectTo<MemberDto>(_mapper.ConfigurationProvider)
+                .SingleOrDefaultAsync();
+        }
+
+		public async Task<string> GetUserGender(string username)
+		{
+            return await _context.AppUsers
+               .Where(x => x.UserName == username)
+               .Select(x => x.Gender).FirstOrDefaultAsync();
+        }
+
+		public void Update(AppUser user)
+		{
+            _context.Entry(user).State = EntityState.Modified;
+        }
+	}
 }

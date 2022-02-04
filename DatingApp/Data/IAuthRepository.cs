@@ -3,11 +3,11 @@ using DatingApp.Models;
 
 namespace DatingApp.Data
 {
-    public interface IAuthRepository : IGenericRepository<User>
+    public interface IAuthRepository : IGenericRepository<AppUser>
     {
-        Task<User> Register(User user, string password);
-        Task<User> Login(string userName, string password);
+        Task<AppUser> Register(AppUser user, string password);
+        Task<AppUser> Login(string userName, string password);
         Task<bool> UserExists(string userName);
-        Task<User> UserAlreadyExists(string userName);
+        Task<AppUser> UserAlreadyExists(string userName);
     }
 }

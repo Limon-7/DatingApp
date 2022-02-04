@@ -19,7 +19,7 @@ namespace DatingApp.Services
             _config = config;
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetSection("AppSettings:Token").Value));
         }
-        public string CreateToken(User user)
+        public string CreateToken(AppUser user)
         {
             var claims = new[]{
                 new Claim(JwtRegisteredClaimNames.NameId,user.Id.ToString()),

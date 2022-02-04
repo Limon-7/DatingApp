@@ -9,15 +9,7 @@ namespace DatingApp.Helper
     {
         public AutoMapperProfiles()
         {
-            CreateMap<User, UserForListDto>().ForMember(des => des.PhotoUrl, opt =>
-            {
-                opt.MapFrom(src => src.Photos.FirstOrDefault(p => p.IsMain).Url);
-            }).ForMember(dest => dest.Age, opt =>
-            {
-                opt.MapFrom(d => d.DateOfBirth.CalCulateAge());
-            });
-            // clean code
-            CreateMap<User, MemberDto>().ForMember(des => des.PhotoUrl, opt =>
+            CreateMap<AppUser, MemberDto>().ForMember(des => des.PhotoUrl, opt =>
             {
                 opt.MapFrom(src => src.Photos.FirstOrDefault(p => p.IsMain).Url);
             }).ForMember(dest => dest.Age, opt =>
@@ -25,23 +17,11 @@ namespace DatingApp.Helper
                 opt.MapFrom(d => d.DateOfBirth.CalCulateAge());
             });
 
-            CreateMap<MemberEditDto, User>();
+            CreateMap<MemberEditDto, AppUser>();
 
             CreateMap<Photo, PhotoDto>();
-            // clean code
 
-            CreateMap<User, UserForDetailsDto>().ForMember(des => des.PhotoUrl, opt =>
-            {
-                opt.MapFrom(src => src.Photos.FirstOrDefault(p => p.IsMain).Url);
-            }).ForMember(dest => dest.Age, opt =>
-            {
-                opt.MapFrom(d => d.DateOfBirth.CalCulateAge());
-            });
-            CreateMap<Photo, PhotoForDetailedDto>();
-
-            CreateMap<Photo, PhotoForReturnDto>();
-            CreateMap<PhotoForCreationDto, Photo>();
-            CreateMap<UserRegisterDto, User>();
+            CreateMap<UserRegisterDto, AppUser>();
         }
     }
 }
