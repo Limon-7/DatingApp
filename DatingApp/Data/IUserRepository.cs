@@ -13,6 +13,8 @@ namespace DatingApp.Data
         Task<AppUser> GetUserByIdAsync(int id);
         Task<AppUser> GetUserByUsernameAsync(string username);
         Task<PageList<MemberDto>> GetMembersAsync(UserParams userParams);
+        Task<Pagination<MemberDto>> GetUsersWithPaginationAsync(UserParams userParams);
+
         Task<MemberDto> GetMemberAsync(string username);
         Task<string> GetUserGender(string username);
 

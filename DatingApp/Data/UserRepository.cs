@@ -129,66 +129,90 @@ namespace DatingApp.Data
                  .SingleOrDefaultAsync();
         }
 
-		public async Task<IEnumerable<AppUser>> GetUsersAsync()
-		{
+        public async Task<IEnumerable<AppUser>> GetUsersAsync()
+        {
             return await _context.AppUsers
                 .Include(p => p.Photos)
                 .ToListAsync();
         }
 
-		public async Task<AppUser> GetUserByIdAsync(int id)
-		{
+        public async Task<AppUser> GetUserByIdAsync(int id)
+        {
             return await _context.AppUsers.FindAsync(id);
-		}
+        }
 
-		public async Task<AppUser> GetUserByUsernameAsync(string username)
-		{
+        public async Task<AppUser> GetUserByUsernameAsync(string username)
+        {
             return await _context.AppUsers
                .Include(p => p.Photos)
                .SingleOrDefaultAsync(x => x.UserName == username);
         }
 
-		public async Task<PageList<MemberDto>> GetMembersAsync(UserParams userParams)
-		{
+        public async Task<PageList<MemberDto>> GetMembersAsync(UserParams userParams)
+        {
             var query = _context.AppUsers.AsQueryable();
 
-			query = query.Where(u => u.UserName != userParams.CurrentUsername);
-			//query = query.Where(u => u.Gender == userParams.Gender);
+            query = query.Where(u => u.UserName != userParams.CurrentUsername);
+            query = query.Where(u => u.Gender.ToLower() == userParams.Gender.ToLower());
 
-			//var minDob = DateTime.Today.AddYears(-userParams.MaxAge - 1);
-			//var maxDob = DateTime.Today.AddYears(-userParams.MinAge);
+            var minDob = DateTime.Today.AddYears(-userParams.MaxAge - 1);
+            var maxDob = DateTime.Today.AddYears(-userParams.MinAge);
 
-			//query = query.Where(u => u.DateOfBirth >= minDob && u.DateOfBirth <= maxDob);
+            query = query.Where(u => u.DateOfBirth >= minDob && u.DateOfBirth <= maxDob);
 
-			//query = userParams.OrderBy switch
-			//{
-			//    "created" => query.OrderByDescending(u => u.Created),
-			//    _ => query.OrderByDescending(u => u.LastActive)
-			//};
+            query = userParams.OrderBy switch
+            {
+                "created" => query.OrderByDescending(u => u.Created),
+                _ => query.OrderByDescending(u => u.LastActive)
+            };
 
-			return await PageList<MemberDto>.CreateAsync(query.ProjectTo<MemberDto>(_mapper
+            return await PageList<MemberDto>.CreateAsync(query.ProjectTo<MemberDto>(_mapper
                 .ConfigurationProvider).AsNoTracking(),
                     userParams.PageNumber, userParams.PageSize);
         }
 
-		public async Task<MemberDto> GetMemberAsync(string username)
-		{
+        public async Task<MemberDto> GetMemberAsync(string username)
+        {
             return await _context.AppUsers
                 .Where(x => x.UserName == username)
                 .ProjectTo<MemberDto>(_mapper.ConfigurationProvider)
                 .SingleOrDefaultAsync();
         }
 
-		public async Task<string> GetUserGender(string username)
-		{
+        public async Task<string> GetUserGender(string username)
+        {
             return await _context.AppUsers
                .Where(x => x.UserName == username)
                .Select(x => x.Gender).FirstOrDefaultAsync();
         }
 
-		public void Update(AppUser user)
-		{
+        public void Update(AppUser user)
+        {
             _context.Entry(user).State = EntityState.Modified;
         }
-	}
+
+        public async Task<Pagination<MemberDto>> GetUsersWithPaginationAsync(UserParams userParams)
+        {
+            var query = _context.AppUsers.AsQueryable();
+
+            query = query.Where(u => u.UserName != userParams.CurrentUsername);
+            query = query.Where(u => u.Gender.ToLower() == userParams.Gender.ToLower());
+
+            var minDob = DateTime.Today.AddYears(-userParams.MaxAge - 1);
+            var maxDob = DateTime.Today.AddYears(-userParams.MinAge);
+
+            query = query.Where(u => u.DateOfBirth >= minDob && u.DateOfBirth <= maxDob);
+
+            query = userParams.OrderBy switch
+            {
+                "created" => query.OrderByDescending(u => u.Created),
+                _ => query.OrderByDescending(u => u.LastActive)
+            };
+            var data = query.ProjectTo<MemberDto>(_mapper
+                            .ConfigurationProvider).AsNoTracking();
+            var count = await _context.AppUsers.CountAsync();
+            return new Pagination<MemberDto>(
+                    userParams.PageNumber, userParams.PageSize, count, data);
+        }
+    }
 }

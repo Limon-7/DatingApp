@@ -15,9 +15,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DatingApp.Controllers
 {
-	[ServiceFilter(typeof(LogUserActivity))]
-	[Authorize]
-	public class UserController : BaseController
+    [ServiceFilter(typeof(LogUserActivity))]
+    [Authorize]
+    public class UserController : BaseController
     {
         private readonly IUserRepository _userRepo;
         private readonly IMapper _mapper;
@@ -51,12 +51,26 @@ namespace DatingApp.Controllers
             userParams.CurrentUsername = User.GetUsername();
 
             if (string.IsNullOrEmpty(userParams.Gender))
-                userParams.Gender = gender == "male" ? "female" : "male";
+                userParams.Gender = gender.ToLower() == "male" ? "female" : "male";
 
             var users = await _userRepo.GetMembersAsync(userParams);
 
             Response.AddPagination(users.CurrentPage, users.PageSize,
                 users.TotalCount, users.TotalPage);
+
+            return Ok(users);
+        }
+
+        [HttpGet("Get-memebrs-with-pagin")]
+        public async Task<ActionResult<IEnumerable<MemberDto>>> GetMembersWithPaginationResponse([FromQuery] UserParams userParams)
+        {
+            var gender = await _userRepo.GetUserGender(User.GetUsername());
+            userParams.CurrentUsername = User.GetUsername();
+
+            if (string.IsNullOrEmpty(userParams.Gender))
+                userParams.Gender = gender.ToLower() == "male" ? "female" : "male";
+
+            var users = await _userRepo.GetUsersWithPaginationAsync(userParams);
 
             return Ok(users);
         }

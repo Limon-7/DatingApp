@@ -26,23 +26,23 @@ namespace DatingApp.Controllers
             _service = service;
         }
 
-		[HttpGet("{id}", Name = "GetPhoto")]
-		public async Task<IActionResult> GetPhotoById(int id)
-		{
-			var photoFromRepo = await _userRepo.GetPhoto(id);
-			var photo = _imapper.Map<PhotoDto>(photoFromRepo);
-			return Ok(photo);
-		}
+        [HttpGet("{id}", Name = "GetPhoto")]
+        public async Task<IActionResult> GetPhotoById(int id)
+        {
+            var photoFromRepo = await _userRepo.GetPhoto(id);
+            var photo = _imapper.Map<PhotoDto>(photoFromRepo);
+            return Ok(photo);
+        }
 
 
-		[HttpPost]
+        [HttpPost("add-photo")]
         public async Task<ActionResult<PhotoDto>> AddPhoto([FromForm] IFormFile file)
         {
             var user = await _userRepo.GetUserByUsernameAsync(User.GetUsername());
-            if(user==null)return Unauthorized();
-            
-           var result = await _service.AddPhotoAsync(file);
-           if (result.Error != null) return BadRequest(result.Error.Message);
+            if (user == null) return Unauthorized();
+
+            var result = await _service.AddPhotoAsync(file);
+            if (result.Error != null) return BadRequest(result.Error.Message);
             var photo = new Photo
             {
                 Url = result.SecureUrl.AbsoluteUri,
@@ -56,7 +56,7 @@ namespace DatingApp.Controllers
 
             user.Photos.Add(photo);
 
-            
+
             if (await _userRepo.SaveAll())
             {
                 return Ok(_imapper.Map<PhotoDto>(photo));
