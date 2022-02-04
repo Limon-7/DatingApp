@@ -96,28 +96,24 @@
                   [(ngModel)]="member.country"
                 />
               </div>
+              <!-- <div class="form-group">
+                <label for="gender">Gender</label>
+                <select
+                  [(ngModel)]="user.gender"
+                  name="gender"
+                  id="gender"
+                  class="form-control"
+                >
+                  <option value="">{{ user.gender }}</option>
+                  <option *ngFor="let gender of gen" [ngValue]="gender">
+                    {{ gender.name }}
+                  </option>
+                </select>
+              </div> -->
             </form>
           </tab>
           <tab heading="Edit Photos">
             <app-photo-editor [member]="member"></app-photo-editor>
-            <!-- <app-photo-editor
-              [photos]="user.photos"
-              (getMemberPhotoChange)="updatePhoto($event)"
-            ></app-photo-editor> -->
-            <!-- <div class="form-group">
-              <label for="gender">Gender</label>
-              <select
-                [(ngModel)]="user.gender"
-                name="gender"
-                id="gender"
-                class="form-control"
-              >
-                <option value="">{{ user.gender }}</option>
-                <option *ngFor="let gender of gen" [ngValue]="gender">
-                  {{ gender.name }}
-                </option>
-              </select>
-            </div> -->
           </tab>
         </tabset>
       </div>

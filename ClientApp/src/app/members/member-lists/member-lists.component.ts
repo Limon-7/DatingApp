@@ -25,6 +25,9 @@ export class MemberListsComponent implements OnInit {
   constructor(private memberService: MemberService, private userService: UserService, private altertify: AlertifyService, private route: ActivatedRoute) { }
 
   ngOnInit() {
+    this.memberService.getUsers().subscribe(value => {
+      console.log("Memebers-with data:", value);
+    })
     this.loadMembers();
 
     this.userParams.gender = this.user.gender === 'Female' ? 'Male' : 'Female';

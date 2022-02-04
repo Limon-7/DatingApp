@@ -1,8 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { IMember } from '../models/iMember';
+import { IMember, IPaginateMember } from '../models/iMember';
 import { IUser } from '../models/iUser';
 import { UserParams } from '../params/user-params';
 
@@ -14,9 +15,22 @@ export class MemberService {
   members: IMember[] = [];
   memberCache = new Map();
   user: IUser;
-  userParams: UserParams;
+
+  queryParams = new UserParams();
+  pagination = new IPaginateMember();
   constructor(private http: HttpClient) { }
 
+  getUsers(): Observable<IPaginateMember> {
+    let params = new HttpParams();
+    // const observable =
+    return this.http.get<IPaginateMember>(`${this.baseUrl}user`,
+      { observe: 'response', params }).pipe(
+        map(response => {
+          this.pagination = response.body;
+          return this.pagination;
+        })
+      );
+  }
   getMembers(): Observable<IMember[]> {
     return this.http.get<IMember[]>(`${this.baseUrl}user`);
   }
@@ -27,4 +41,8 @@ export class MemberService {
   updateMember(model: IMember) {
     return this.http.put(`${this.baseUrl}user`, model);
   }
+
+
+  getParams = (): UserParams => this.queryParams;
+  setParams = (params: UserParams): UserParams => this.queryParams = params;
 }

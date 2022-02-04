@@ -10,7 +10,6 @@ import { AppComponent } from './app.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { ListsComponent } from './lists/lists.component';
-import { MessageComponent } from './message/message.component';
 import { MemberListsComponent } from './members/member-lists/member-lists.component';
 import { RouterModule } from '@angular/router';
 import { MemberCardComponent } from './members/member-card/member-card.component';
@@ -32,7 +31,6 @@ import { JwtInterceptor } from './core/interceptors/jwt.interceptor';
       AppComponent,
 
       ListsComponent,
-      MessageComponent,
       MemberListsComponent,
       MemberCardComponent,
       MemberDetailedComponent,

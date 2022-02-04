@@ -2,7 +2,7 @@ import { IPaginate } from './iPaginate';
 import { IPhoto } from './iPhoto';
 
 export class IPaginateMember implements IPaginate {
-    data: IMember[]
+    data: IMember[] = []
     currentPage: number;
     itemsPerPage: number;
     totalItems: number;

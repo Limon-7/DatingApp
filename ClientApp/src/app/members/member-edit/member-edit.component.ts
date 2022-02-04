@@ -19,6 +19,11 @@ export class MemberEditComponent implements OnInit {
   user: IUser;
   photoUrl: string;
 
+  // gen = [
+  //   { name: "Male" },
+  //   { name: "FeMale" },
+  // ]
+
   @HostListener('window:beforeunload', ['$event'])
   unloadNotification($event: any) {
     if (this.editForm.dirty) {
@@ -42,6 +47,8 @@ export class MemberEditComponent implements OnInit {
   }
 
   updateUser() {
+    console.log("model:", this.member);
+    this.member.gender = "Male"
     this.memberService.updateMember(this.member).subscribe(() => {
       this.alertify.success('Profile updated successfully');
       this.editForm.reset(this.member);

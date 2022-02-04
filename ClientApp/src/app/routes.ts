@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './account/home/home.component';
 import { MemberListsComponent } from './members/member-lists/member-lists.component';
-import { MessageComponent } from './message/message.component';
 import { ListsComponent } from './lists/lists.component';
 import { AuthGuard } from './core/guards/auth.guard';
 import { MemberDetailedComponent } from './members/member-detailed/member-detailed.component';
@@ -27,7 +26,7 @@ export const appRoutes: Routes = [
                 // resolve: { user: MemberEditResolver },
                 canDeactivate: [PreventUnsavedChanges]
             },
-            { path: 'message', component: MessageComponent },
+            { path: 'message', loadChildren: () => import("./message/message.module").then(m => m.MessageModule) },
             { path: 'lists', component: ListsComponent, resolve: { users: ListResolver } }
         ]
     },
