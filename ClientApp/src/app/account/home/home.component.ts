@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { AuthService } from '../../_services/auth.service';
-
+import { AccountService } from 'src/app/shared/services/account.service';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -11,12 +9,11 @@ export class HomeComponent implements OnInit {
 
   toggle: boolean = false;
   registerMode = false;
-  constructor(private http: HttpClient, public authService: AuthService) {
-
+  constructor(public accountService: AccountService) {
+    // this.accountService.currentUserObservable$
   }
 
   ngOnInit() {
-    console.log("current-user:", this.authService.currentUser);
   }
   registerToggle() {
     this.registerMode = true;

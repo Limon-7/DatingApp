@@ -1,9 +1,8 @@
 <div class="text-center mt-3">
   <h2>
-    {{
-      likesParam === "Likers" ? "Members who like me" : "Members who I've Liked"
-    }}
-    : {{ pagination.totalIteams }}
+    {{ predicate === "liked" ? "Members I like" : "Members who like me" }}
+
+    <!-- : {{ pagination.totalIteams }} -->
   </h2>
 </div>
 
@@ -12,25 +11,25 @@
     <div class="btn-group">
       <button
         class="btn btn-primary"
-        [(ngModel)]="likesParam"
-        btnRadio="Likers"
-        (click)="loadUsers()"
+        [(ngModel)]="predicate"
+        btnRadio="liked"
+        (click)="loadLikes()"
       >
-        Members who like me
+        Members I like
       </button>
       <button
         class="btn btn-primary"
-        [(ngModel)]="likesParam"
-        btnRadio="Likees"
-        (click)="loadUsers()"
+        [(ngModel)]="predicate"
+        btnRadio="likedBy"
+        (click)="loadLikes()"
       >
-        Members who I like
+        Members who like me
       </button>
     </div>
   </div>
 
   <br />
-  <div>
+  <!-- <div>
     <label for="">Items Per Page</label>
     <select
       class="form-control ml-1"
@@ -44,20 +43,23 @@
         {{ page.value }}
       </option>
     </select>
-  </div>
+  </div> -->
   <br />
   <div class="row">
-    <div *ngFor="let user of user" class="col-sm-6 col-md-4 col-lg-4 col-xl-2">
-      <app-member-card [member]="user"></app-member-card>
+    <div
+      *ngFor="let member of members"
+      class="col-sm-6 col-md-4 col-lg-4 col-xl-2"
+    >
+      <app-member-card [member]="member"></app-member-card>
     </div>
   </div>
 </div>
 
-<div class="d-flex justify-content-center">
-  <!-- <pagination
+<div class="d-flex justify-content-center" *ngIf="pagination">
+  <pagination
     [boundaryLinks]="true"
-    [totalItems]="pagination.totalIteams"
-    [itemsPerPage]="pagination.iteamsPerPage"
+    [totalItems]="pagination.totalItems"
+    [itemsPerPage]="pagination.itemsPerPage"
     [(ngModel)]="pagination.currentPage"
     (pageChanged)="pageChanged($event)"
     previousText="&lsaquo;"
@@ -65,5 +67,5 @@
     firstText="&laquo;"
     lastText="&raquo;"
   >
-  </pagination> -->
+  </pagination>
 </div>

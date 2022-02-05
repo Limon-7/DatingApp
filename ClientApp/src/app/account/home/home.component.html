@@ -1,22 +1,17 @@
 <div class="container mt-5">
   <div *ngIf="!registerMode" style="text-align: center">
     <h1>Find your match</h1>
-    <p class="lead">
-      Come on in to view your matches....all
-      {{
-        authService?.currentUser ? "Go to User page" : "you need to do sign up!"
-      }}
-    </p>
+    <p class="lead">Come on in to view your matches....all</p>
 
     <div class="text-center">
-      <ng-container *ngIf="!authService.currentUser">
+      <ng-container *ngIf="!(accountService.currentUserObservable$ | async)">
         <button class="bn btn-primary btn-lg mr-2" (click)="registerToggle()">
           Register
         </button>
         <button class="bn btn-primary btn-lg">Learn More</button>
       </ng-container>
       <button
-        *ngIf="authService.currentUser"
+        *ngIf="accountService.currentUserObservable$ | async"
         class="bn btn-primary btn-lg"
         routerLink="/members"
       >
@@ -28,9 +23,9 @@
     <div class="row justify-content-center">
       <div class="col-4">
         signup goes here
-        <!-- <app-sign-up
+        <app-sign-up
           (cancleRegisterMode)="cancelRegister($event)"
-        ></app-sign-up> -->
+        ></app-sign-up>
       </div>
     </div>
   </div>

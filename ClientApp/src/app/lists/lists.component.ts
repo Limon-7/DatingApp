@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../_services/auth.service';
-import { UserService } from '../_services/user.service';
 import { ActivatedRoute } from '@angular/router';
 import { AlertifyService } from '../_services/alertify.service';
-import { User } from '../_models/user';
-import { Pagination, PaginatedResult } from '../_models/pagination';
+import { IMember } from '../shared/models/iMember';
+import { MemberService } from '../shared/services/member.service';
+import { IPaginate } from '../shared/models/iPaginate';
 
 @Component({
   selector: 'app-lists',
@@ -13,39 +12,35 @@ import { Pagination, PaginatedResult } from '../_models/pagination';
 })
 export class ListsComponent implements OnInit {
 
-  user: User;
-  pagination: Pagination;
-  likesParam: string;
+  members: Partial<IMember[]>;
+  predicate = 'liked';
+  pageNumber = 1;
+  pageSize = 2;
+  pagination: IPaginate;
+
   pageSizeOptions = [{ value: 3, display: 3 }, { value: 10, display: 10 }, { value: 20, display: 20 }];
 
-  constructor(public authService: AuthService, public userService: UserService,
+  constructor(public memberService: MemberService,
     public route: ActivatedRoute, public alertify: AlertifyService) { }
 
   ngOnInit() {
-    this.route.data.subscribe(data => {
-      this.user = data['users'].result;
-      this.pagination = data['users'].pagination;
-    });
-    this.likesParam = 'Likers';
-    this.pagination.iteamsPerPage = 20;
+    this.loadLikes()
   }
-  loadUsers() {
-    this.userService.getUsers(this.pagination.currentPage,
-      this.pagination.iteamsPerPage, null, this.likesParam).subscribe((res: PaginatedResult<User>) => {
-        this.user = res.result;
-        this.pagination = res.pagination;
-        console.log('User', this.user);
-      }, err => {
-        this.alertify.error(err);
-      });
+  loadLikes() {
+    this.memberService.getLikes(this.predicate, this.pageNumber, this.pageSize).subscribe(response => {
+      this.members = response.result;
+      this.pagination = response.pagination;
+    })
   }
-  pageChanged(event: any): void {
-    this.pagination.currentPage = event.page;
-    this.loadUsers();
+
+  pageChanged(event: any) {
+    this.pageNumber = event.page;
+    this.loadLikes();
   }
+
   onPageOptionsSeletecd(event: any): void {
-    this.pagination.iteamsPerPage = event;
-    this.loadUsers();
+    // this.pagination.itemsPerPage = event;
+    // this.loadLikes();
   }
 
 }
