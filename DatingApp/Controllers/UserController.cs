@@ -19,26 +19,26 @@ namespace DatingApp.Controllers
     [Authorize]
     public class UserController : BaseController
     {
-        private readonly IUserRepository _userRepo;
+        private readonly IUserService _service;
         private readonly IMapper _mapper;
         public readonly IPhotoService _photoService;
 
-        public UserController(IUserRepository userRepo, IMapper mapper, IPhotoService photoService)
+        public UserController(IUserService service, IMapper mapper, IPhotoService photoService)
         {
             _photoService = photoService;
-            _userRepo = userRepo;
+            _service = service;
             _mapper = mapper;
         }
         //[HttpGet]
         //public async Task<IActionResult> GetUsers([FromQuery] UserParams userParams)
         //{
-        //    var userFromRepo = await _userRepo.GetUserById(User.GetUserId());
+        //    var userFromRepo = await _service.GetUserById(User.GetUserId());
         //    userParams.UserId = User.GetUserId();
         //    if (string.IsNullOrEmpty(userParams.Gender))
         //    {
         //        userParams.Gender = userFromRepo.Gender == "Male" ? "Female" : "Male";
         //    }
-        //    var users = await _userRepo.GetUsers(userParams);
+        //    var users = await _service.GetUsers(userParams);
         //    var usersToReturn = _mapper.Map<IEnumerable<MemberDto>>(users);
         //    Response.AddPagination(users.CurrentPage, users.PageSize, users.TotalCount, users.TotalPage);
         //    return Ok(usersToReturn);
@@ -47,13 +47,13 @@ namespace DatingApp.Controllers
         [HttpGet()]
         public async Task<ActionResult<IEnumerable<MemberDto>>> GetMembers([FromQuery] UserParams userParams)
         {
-            var gender = await _userRepo.GetUserGender(User.GetUsername());
+            var gender = await _service.GetUserGender(User.GetUsername());
             userParams.CurrentUsername = User.GetUsername();
 
             if (string.IsNullOrEmpty(userParams.Gender))
                 userParams.Gender = gender.ToLower() == "male" ? "female" : "male";
 
-            var users = await _userRepo.GetMembersAsync(userParams);
+            var users = await _service.GetMembersAsync(userParams);
 
             Response.AddPagination(users.CurrentPage, users.PageSize,
                 users.TotalCount, users.TotalPage);
@@ -64,13 +64,13 @@ namespace DatingApp.Controllers
         [HttpGet("Get-memebrs-with-pagin")]
         public async Task<ActionResult<IEnumerable<MemberDto>>> GetMembersWithPaginationResponse([FromQuery] UserParams userParams)
         {
-            var gender = await _userRepo.GetUserGender(User.GetUsername());
+            var gender = await _service.GetUserGender(User.GetUsername());
             userParams.CurrentUsername = User.GetUsername();
 
             if (string.IsNullOrEmpty(userParams.Gender))
                 userParams.Gender = gender.ToLower() == "male" ? "female" : "male";
 
-            var users = await _userRepo.GetUsersWithPaginationAsync(userParams);
+            var users = await _service.GetUsersWithPaginationAsync(userParams);
 
             return Ok(users);
         }
@@ -79,19 +79,19 @@ namespace DatingApp.Controllers
         [HttpGet("{userName}", Name = "GetUser")]
         public async Task<ActionResult<MemberDto>> GetUser(string userName)
         {
-            var user = await _userRepo.GetMemberAsync(userName);
+            var user = await _service.GetMemberAsync(userName);
             return Ok(user);
         }
 
         [HttpPut]
         public async Task<IActionResult> UpdateUser(MemberEditDto dto)
         {
-            var user = await _userRepo.GetUserByUsernameAsync(User.GetUsername());
+            var user = await _service.GetUserByUsernameAsync(User.GetUsername());
             _mapper.Map(dto, user);
 
-            _userRepo.Update(user);
+            _service.Update(user);
 
-            if (await _userRepo.SaveAll())
+            if (await _service.SaveAll())
                 return NoContent();
 
             return BadRequest();
@@ -100,7 +100,7 @@ namespace DatingApp.Controllers
         [HttpPost("AddPhoto")]
         public async Task<ActionResult<PhotoDto>> AddPhoto(IFormFile file)
         {
-            var user = await _userRepo.GetUserById(User.GetUserId());
+            var user = await _service.GetUserById(User.GetUserId());
 
             var result = await _photoService.AddPhotoAsync(file);
 
@@ -119,7 +119,7 @@ namespace DatingApp.Controllers
 
             user.Photos.Add(photo);
 
-            if (await _userRepo.SaveAll())
+            if (await _service.SaveAll())
             {
                 return CreatedAtRoute("GetUser", new { userName = user.UserName }, _mapper.Map<PhotoDto>(photo));
             }
@@ -133,18 +133,18 @@ namespace DatingApp.Controllers
         {
             if (id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
                 return Unauthorized();
-            var like = await _userRepo.GetLike(id, recipientId);
+            var like = await _service.GetLike(id, recipientId);
             if (like != null)
                 return BadRequest("You already like this user ");
-            if (await _userRepo.GetUserById(recipientId) == null)
+            if (await _service.GetUserById(recipientId) == null)
                 return NotFound();
             like = new Like
             {
                 LikerId = id,
                 LikeeId = recipientId
             };
-            _userRepo.Add<Like>(like);
-            if (await _userRepo.SaveAll())
+            _service.Add<Like>(like);
+            if (await _service.SaveAll())
                 return Ok();
             return BadRequest("Failed to like user");
 

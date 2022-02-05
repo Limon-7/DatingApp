@@ -2,10 +2,9 @@
 using System.Net;
 using System.Text;
 using DatingApp.Data;
+using DatingApp.Extentions;
 using DatingApp.Helper;
-using DatingApp.Interfaces;
 using DatingApp.Options;
-using DatingApp.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
@@ -33,10 +32,6 @@ namespace DatingApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
-            services.AddTransient<ITokenService, TokenService>();
-            services.AddScoped<IPhotoService, PhotoService>();
-
             services.AddDbContext<DataContext>(x => x.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddAutoMapper((typeof(AutoMapperProfiles).Assembly));

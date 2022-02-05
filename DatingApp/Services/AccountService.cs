@@ -1,19 +1,16 @@
-using System;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using DatingApp.Data;
 using DatingApp.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace DatingApp.Data
+namespace DatingApp.Interfaces
 {
-    public class AuthRepository : GenericRepository<AppUser>, IAuthRepository
+    public class AccountService : BaseService<AppUser>, IAccountService
     {
-        // private readonly DataContext _context;
 
-        public AuthRepository(DataContext context) : base(context)
+        public AccountService(DataContext context) : base(context)
         {
-            // _context = context;
         }
         public async Task<AppUser> Login(string userName, string password)
         {
@@ -75,7 +72,5 @@ namespace DatingApp.Data
             return user;
 
         }
-
-
     }
 }

@@ -4,18 +4,19 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using DatingApp.Data;
 using DatingApp.Dtos;
 using DatingApp.Helper;
 using DatingApp.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace DatingApp.Data
+namespace DatingApp.Interfaces
 {
-    public class UserRepository : GenericRepository<AppUser>, IUserRepository
+    public class UserService : BaseService<AppUser>, IUserService
     {
         private readonly IMapper _mapper;
 
-        public UserRepository(DataContext context, IMapper mapper) : base(context)
+        public UserService(DataContext context, IMapper mapper) : base(context)
         {
             _mapper = mapper;
 

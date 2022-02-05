@@ -1,14 +1,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DatingApp.Data;
+using DatingApp.Models;
 
-namespace DatingApp.Data
+namespace DatingApp.Interfaces
 {
-    public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : class
+    public class BaseService<TEntity> : IBaseService<TEntity> where TEntity : class
     {
         protected readonly DataContext _context;
 
-        public GenericRepository(DataContext context)
+        public BaseService(DataContext context)
         {
             _context = context;
         }
@@ -30,12 +32,12 @@ namespace DatingApp.Data
 
         public async Task Update(int id, TEntity entity)
         {
-           _context.Set<TEntity>().Update(entity);
-           await _context.SaveChangesAsync();
+            _context.Set<TEntity>().Update(entity);
+            await _context.SaveChangesAsync();
         }
         public async Task DeleteById(int id)
         {
-            var entity= await _context.Set<TEntity>().FindAsync(id);
+            var entity = await _context.Set<TEntity>().FindAsync(id);
             _context.Set<TEntity>().Remove(entity);
             await _context.SaveChangesAsync();
         }

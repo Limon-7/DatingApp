@@ -1,7 +1,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using DatingApp.Data;
 using DatingApp.Dtos;
 using DatingApp.Interfaces;
 using DatingApp.Models;
@@ -14,15 +13,15 @@ namespace DatingApp.Controllers
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
-        private readonly IAuthRepository _authRepository;
+        private readonly IAccountService _service;
         private readonly IMapper _imapper;
         private readonly ITokenService _tokenService;
 
-        public AuthController(IAuthRepository authRepository, IMapper imapper, ITokenService tokenService)
+        public AuthController(IAccountService service, IMapper imapper, ITokenService tokenService)
         {
             _imapper = imapper;
             _tokenService = tokenService;
-            _authRepository = authRepository;
+            _service = service;
         }
 
         [HttpPost("register")]
@@ -30,11 +29,11 @@ namespace DatingApp.Controllers
         {
             var username = dto.UserName.ToLower();
 
-            if (await _authRepository.UserExists(username))
+            if (await _service.UserExists(username))
                 return BadRequest(new { userNameExists = "Username is already taken" });
 
             var user = _imapper.Map<AppUser>(dto);
-            var createUser = await _authRepository.Register(user, dto.Password);
+            var createUser = await _service.Register(user, dto.Password);
 
             return Ok(new UserDto
             {
@@ -48,7 +47,7 @@ namespace DatingApp.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDto dto)
         {
-            var user = await _authRepository.Login(dto.UserName.ToLower(), dto.Password);
+            var user = await _service.Login(dto.UserName.ToLower(), dto.Password);
             if (user == null)
             {
                 return Unauthorized();
@@ -68,7 +67,7 @@ namespace DatingApp.Controllers
         [HttpGet("checkUsername")]
         public async Task<IActionResult> checkUserName(string username)
         {
-            var user = await _authRepository.UserExists(username);
+            var user = await _service.UserExists(username);
             if (user)
             {
                 return BadRequest(new

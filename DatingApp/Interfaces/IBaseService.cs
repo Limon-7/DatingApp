@@ -1,17 +1,16 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
-namespace DatingApp.Data
+namespace DatingApp.Interfaces
 {
-    public interface IGenericRepository<TEntity> where TEntity : class
+    public interface IBaseService<TEntity> where TEntity : class
     {
         IEnumerable<TEntity> GetAll();
         Task<TEntity> GetById(int id);
         Task Create(TEntity entity);
         Task Update(int id, TEntity entity);
-        Task DeleteById(int id); 
-        void  Delete (TEntity entity);
+        Task DeleteById(int id);
+        void Delete(TEntity entity);
 
     }
 }

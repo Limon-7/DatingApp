@@ -4,9 +4,9 @@ using DatingApp.Dtos;
 using DatingApp.Helper;
 using DatingApp.Models;
 
-namespace DatingApp.Data
+namespace DatingApp.Interfaces
 {
-    public interface IUserRepository : IGenericRepository<AppUser>
+    public interface IUserService : IBaseService<AppUser>
     {
         void Update(AppUser user);
         Task<IEnumerable<AppUser>> GetUsersAsync();

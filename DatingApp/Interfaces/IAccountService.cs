@@ -1,9 +1,9 @@
 using System.Threading.Tasks;
 using DatingApp.Models;
 
-namespace DatingApp.Data
+namespace DatingApp.Interfaces
 {
-    public interface IAuthRepository : IGenericRepository<AppUser>
+    public interface IAccountService : IBaseService<AppUser>
     {
         Task<AppUser> Register(AppUser user, string password);
         Task<AppUser> Login(string userName, string password);
