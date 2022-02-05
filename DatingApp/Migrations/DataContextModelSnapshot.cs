@@ -66,21 +66,6 @@ namespace DatingApp.Migrations
                     b.ToTable("AppUsers");
                 });
 
-            modelBuilder.Entity("DatingApp.Models.Like", b =>
-                {
-                    b.Property<int>("LikerId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("LikeeId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("LikerId", "LikeeId");
-
-                    b.HasIndex("LikeeId");
-
-                    b.ToTable("Likes");
-                });
-
             modelBuilder.Entity("DatingApp.Models.Photo", b =>
                 {
                     b.Property<int>("Id")
@@ -109,37 +94,19 @@ namespace DatingApp.Migrations
                     b.ToTable("Photos");
                 });
 
-            modelBuilder.Entity("DatingApp.Models.Value", b =>
+            modelBuilder.Entity("DatingApp.Models.UserLike", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("SourceUserId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Name")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("LikedUserId")
+                        .HasColumnType("INTEGER");
 
-                    b.HasKey("Id");
+                    b.HasKey("SourceUserId", "LikedUserId");
 
-                    b.ToTable("Values");
-                });
+                    b.HasIndex("LikedUserId");
 
-            modelBuilder.Entity("DatingApp.Models.Like", b =>
-                {
-                    b.HasOne("DatingApp.Models.AppUser", "Likee")
-                        .WithMany("Likers")
-                        .HasForeignKey("LikeeId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("DatingApp.Models.AppUser", "Liker")
-                        .WithMany("Likees")
-                        .HasForeignKey("LikerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Likee");
-
-                    b.Navigation("Liker");
+                    b.ToTable("Likes");
                 });
 
             modelBuilder.Entity("DatingApp.Models.Photo", b =>
@@ -151,11 +118,30 @@ namespace DatingApp.Migrations
                     b.Navigation("AppUser");
                 });
 
+            modelBuilder.Entity("DatingApp.Models.UserLike", b =>
+                {
+                    b.HasOne("DatingApp.Models.AppUser", "LikedUser")
+                        .WithMany("LikedByUsers")
+                        .HasForeignKey("LikedUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("DatingApp.Models.AppUser", "SourceUser")
+                        .WithMany("LikedUsers")
+                        .HasForeignKey("SourceUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("LikedUser");
+
+                    b.Navigation("SourceUser");
+                });
+
             modelBuilder.Entity("DatingApp.Models.AppUser", b =>
                 {
-                    b.Navigation("Likees");
+                    b.Navigation("LikedByUsers");
 
-                    b.Navigation("Likers");
+                    b.Navigation("LikedUsers");
 
                     b.Navigation("Photos");
                 });

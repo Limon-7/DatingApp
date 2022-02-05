@@ -21,23 +21,11 @@ namespace DatingApp.Interfaces
             _mapper = mapper;
 
         }
-
-        public void Add<Like>(Like entity)
-        {
-            _context.Add(entity);
-        }
-
         // Safe=> removed
         public void DeletePhoto(Photo photo)
         {
             _context.Remove(photo);
         }
-
-        public async Task<Like> GetLike(int userId, int recipientId)
-        {
-            return await _context.Likes.FirstOrDefaultAsync(u => u.LikerId == userId && u.LikeeId == recipientId);
-        }
-
         public async Task<Photo> GetMainPhoto(int userId)
         {
             return await _context.Photos.Where(u => u.UserId == userId).FirstOrDefaultAsync(p => p.IsMain);
@@ -60,18 +48,18 @@ namespace DatingApp.Interfaces
             var users = _context.AppUsers.Include(p => p.Photos).OrderByDescending(u => u.LastActive).AsQueryable();
             users = users.Where(u => u.Id != userParams.UserId);
             users = users.Where(u => u.Gender == userParams.Gender);
-            if (userParams.Likers)
-            {
-                //this will return current 
-                var userLikers = await GetUserLikes(userParams.UserId, userParams.Likers);
-                users = users.Where(u => userLikers.Contains(u.Id));
-            }
-            if (userParams.Likees)
-            {
-                //here use the same userParams.Likers because we check likers true or false
-                var userLikees = await GetUserLikes(userParams.UserId, userParams.Likers);
-                users = users.Where(u => userLikees.Contains(u.Id));
-            }
+            // if (userParams.Likers)
+            // {
+            //     //this will return current 
+            //     var userLikers = await GetUserLikes(userParams.UserId, userParams.Likers);
+            //     users = users.Where(u => userLikers.Contains(u.Id));
+            // }
+            // if (userParams.Likees)
+            // {
+            //     //here use the same userParams.Likers because we check likers true or false
+            //     var userLikees = await GetUserLikes(userParams.UserId, userParams.Likers);
+            //     users = users.Where(u => userLikees.Contains(u.Id));
+            // }
 
 
             if (userParams.MinAge != 18 && userParams.MaxAge != 90)
@@ -98,24 +86,24 @@ namespace DatingApp.Interfaces
             return await PageList<AppUser>.CreateAsync(users, userParams.PageNumber, userParams.PageSize);
         }
 
-        private async Task<IEnumerable<int>> GetUserLikes(int id, bool likers)
-        {
-            //find  the login user whom he liked or who is being liked by other user
-            var user = await _context.AppUsers
-            .Include(l => l.Likers)
-            .Include(l => l.Likees)
-            .FirstOrDefaultAsync(u => u.Id == id);
-            if (likers)
-            {
-                //return a list of likers who liked currently login user
-                return user.Likers.Where(u => u.LikeeId == id).Select(i => i.LikerId);
-            }
-            else
-            {
-                //return a list of likees of the current login user 
-                return user.Likees.Where(u => u.LikerId == id).Select(i => i.LikeeId);
-            }
-        }
+        // private async Task<IEnumerable<int>> GetUserLikes(int id, bool likers)
+        // {
+        //     //find  the login user whom he liked or who is being liked by other user
+        //     var user = await _context.AppUsers
+        //     .Include(l => l.Likers)
+        //     .Include(l => l.Likees)
+        //     .FirstOrDefaultAsync(u => u.Id == id);
+        //     if (likers)
+        //     {
+        //         //return a list of likers who liked currently login user
+        //         return user.Likers.Where(u => u.LikeeId == id).Select(i => i.LikerId);
+        //     }
+        //     else
+        //     {
+        //         //return a list of likees of the current login user 
+        //         return user.Likees.Where(u => u.LikerId == id).Select(i => i.LikeeId);
+        //     }
+        // }
 
         public async Task<bool> SaveAll()
         {

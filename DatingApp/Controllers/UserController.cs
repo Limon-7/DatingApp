@@ -128,27 +128,5 @@ namespace DatingApp.Controllers
             return BadRequest("Problem addding photo");
         }
 
-        [HttpPost("{id}/like/{recipientId}")]
-        public async Task<IActionResult> LikeUser(int id, int recipientId)
-        {
-            if (id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
-                return Unauthorized();
-            var like = await _service.GetLike(id, recipientId);
-            if (like != null)
-                return BadRequest("You already like this user ");
-            if (await _service.GetUserById(recipientId) == null)
-                return NotFound();
-            like = new Like
-            {
-                LikerId = id,
-                LikeeId = recipientId
-            };
-            _service.Add<Like>(like);
-            if (await _service.SaveAll())
-                return Ok();
-            return BadRequest("Failed to like user");
-
-        }
-
     }
 }

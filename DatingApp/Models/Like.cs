@@ -1,10 +1,11 @@
 namespace DatingApp.Models
 {
-    public class Like
+    public class UserLike
     {
-        public int LikerId { get; set; }
-        public AppUser Liker { get; set; }
-        public int LikeeId { get; set; }
-        public AppUser Likee { get; set; }
+        public AppUser SourceUser { get; set; }
+        public int SourceUserId { get; set; }
+
+        public AppUser LikedUser { get; set; }
+        public int LikedUserId { get; set; }
     }
 }
