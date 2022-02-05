@@ -10,7 +10,7 @@ export class UserParams implements QueryParams {
     maxAge = 99;
     orderBy = 'lastActive';
 
-    // constructor(user: IUser) {
-    //     this.gender = user.gender === 'female' ? 'Male' : 'Female';
-    // }
+    constructor(user: IUser) {
+        this.gender = user.gender === 'female' ? 'Male' : 'Female';
+    }
 }

@@ -3,7 +3,12 @@
 </div>
 
 <div class="container mt-5">
-  <form class="form-inline" #form="ngForm" (ngSubmit)="loadUsers()" novalidate>
+  <form
+    class="form-inline"
+    #form="ngForm"
+    (ngSubmit)="loadMembers()"
+    novalidate
+  >
     <div class="form-group">
       <label for="minAge">Age From</label>
       <input
@@ -60,7 +65,7 @@
           name="orderBy"
           class="btn btn-primary"
           [(ngModel)]="userParams.orderBy"
-          (click)="loadUsers()"
+          (click)="loadMembers()"
           btnRadio="lastActive"
         >
           Last Active
@@ -70,7 +75,7 @@
           name="orderBy"
           class="btn btn-primary"
           [(ngModel)]="userParams.orderBy"
-          (click)="loadUsers()"
+          (click)="loadMembers()"
           btnRadio="created"
         >
           Newest Members
@@ -86,11 +91,11 @@
     </div>
   </div>
 </div>
-<div class="d-flex justify-content-center">
-  <!-- <pagination
+<div class="d-flex justify-content-center" *ngIf="pagination">
+  <pagination
     [boundaryLinks]="true"
-    [totalItems]="pagination.totalIteams"
-    [itemsPerPage]="pagination.iteamsPerPage"
+    [totalItems]="pagination.totalItems"
+    [itemsPerPage]="pagination.itemsPerPage"
     [(ngModel)]="pagination.currentPage"
     (pageChanged)="pageChanged($event)"
     previousText="&lsaquo;"
@@ -98,5 +103,5 @@
     firstText="&laquo;"
     lastText="&raquo;"
   >
-  </pagination> -->
+  </pagination>
 </div>

@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { User } from '../../_models/user';
-import { UserService } from '../../_services/user.service';
-import { AlertifyService } from '../../_services/alertify.service';
-import { ActivatedRoute } from '@angular/router';
-import { Pagination, PaginatedResult } from '../../_models/pagination';
 import { MemberService } from 'src/app/shared/services/member.service';
 import { IMember } from 'src/app/shared/models/iMember';
+import { UserParams } from 'src/app/shared/params/user-params';
+import { IUser } from 'src/app/shared/models/iUser';
+import { IPaginate } from 'src/app/shared/models/iPaginate';
 
 @Component({
   selector: 'app-member-lists',
@@ -15,52 +13,41 @@ import { IMember } from 'src/app/shared/models/iMember';
 export class MemberListsComponent implements OnInit {
 
   members: IMember[];
+  pagination: IPaginate;
 
-  // 
-  users: User;
-  user: User = JSON.parse(localStorage.getItem('user'));
+  userParams: UserParams;
+  user: IUser;
+
+
   genderlist = [{ value: 'Male', display: 'Male' }, { value: 'Female', display: 'Female' }];
-  userParams: any = {};
-  pagination: Pagination;
-  constructor(private memberService: MemberService, private userService: UserService, private altertify: AlertifyService, private route: ActivatedRoute) { }
+
+
+  constructor(private memberService: MemberService) {
+    this.userParams = this.memberService.getParams();
+  }
 
   ngOnInit() {
-    this.memberService.getUsers().subscribe(value => {
-      console.log("Memebers-with data:", value);
-    })
+    // this.memberService.getUsers().subscribe(value => {
+    //   console.log("Memebers-with data:", value);
+    // })
     this.loadMembers();
-
-    this.userParams.gender = this.user.gender === 'Female' ? 'Male' : 'Female';
-    this.userParams.minAge = 18;
-    this.userParams.maxAge = 99;
-    this.userParams.orderBy = 'lastActive';
   }
   loadMembers() {
-    // this.memberService.setUserParams(this.userParams);
-    this.memberService.getMembers().subscribe(response => {
+    this.memberService.setParams(this.userParams);
+    this.memberService.getMembers(this.userParams).subscribe(response => {
       console.log("response:", response);
-      this.members = response
-
+      this.members = response.result;
+      this.pagination = response.pagination;
     })
   }
   resetFilters() {
-    this.userParams.gender = this.user.gender === 'Female' ? 'Male' : 'Female';
-    this.userParams.minAge = 18;
-    this.userParams.maxAge = 99;
-    // this.userParams.orderBy = 'lastActive';
-    this.loadUsers();
-  }
-  loadUsers() {
-    this.userService.getUsers(this.pagination.currentPage,
-      this.pagination.iteamsPerPage, this.userParams).subscribe((res: PaginatedResult<User>) => {
-        this.users = res.result;
-        this.pagination = res.pagination;
-      }, err => {
-        this.altertify.error(err);
-      });
+    this.userParams = this.memberService.resetUserParams();
+    this.loadMembers();
   }
   pageChanged(event: any): void {
-    this.pagination.currentPage = event.page;
-    this.loadUsers();
+    this.userParams.pageNumber = event.page;
+    this.memberService.setParams(this.userParams);
+    this.loadMembers();
+    this.loadMembers();
   }
 }

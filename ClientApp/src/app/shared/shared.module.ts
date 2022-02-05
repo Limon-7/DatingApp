@@ -5,12 +5,13 @@ import { FileUploadModule } from 'ng2-file-upload';
 import { NgxGalleryModule } from '@kolkov/ngx-gallery';
 import { TimeagoModule } from 'ngx-timeago';
 
-import { BsDropdownConfig, BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 
 
@@ -18,15 +19,20 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
+    // MemberCardComponent
   ],
   imports: [
     CommonModule,
+    RouterModule,
     ReactiveFormsModule,
     FormsModule,
+
+
     FileUploadModule,
+    NgxGalleryModule,
+    TimeagoModule.forRoot(),
 
-
-    BsDropdownModule,
+    BsDropdownModule.forRoot(),
     TabsModule.forRoot(),
     BsDatepickerModule.forRoot(),
     PaginationModule.forRoot(),
@@ -34,7 +40,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
   ],
   exports: [
+    RouterModule,
     FormsModule,
+    ReactiveFormsModule,
 
     FileUploadModule,
     NgxGalleryModule,
@@ -47,8 +55,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ButtonsModule,
 
     // components
+    // MemberCardComponent
 
   ],
-  providers: [{ provide: BsDropdownConfig, useValue: { autoClose: true } }]
 })
 export class SharedModule { }

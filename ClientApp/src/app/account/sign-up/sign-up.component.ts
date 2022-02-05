@@ -1,4 +1,3 @@
-import { UsernameValidators } from './../../_validators/username.validators';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
@@ -6,6 +5,7 @@ import { User } from 'src/app/_models/user';
 import { AlertifyService } from 'src/app/_services/alertify.service';
 import { Router } from '@angular/router';
 import { AccountService } from 'src/app/shared/services/account.service';
+import { UsernameValidators } from 'src/app/_validators/username.validators';
 
 @Component({
   selector: 'app-sign-up',
