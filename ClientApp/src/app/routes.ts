@@ -21,7 +21,6 @@ export const appRoutes: Routes = [
             },
             {
                 path: 'member/edit', component: MemberEditComponent,
-                // resolve: { user: MemberEditResolver },
                 canDeactivate: [PreventUnsavedChanges]
             },
             { path: 'message', loadChildren: () => import("./message/message.module").then(m => m.MessageModule) },

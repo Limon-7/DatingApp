@@ -15,7 +15,6 @@ import { RouterModule } from '@angular/router';
 import { MemberCardComponent } from './members/member-card/member-card.component';
 import { MemberDetailedComponent } from './members/member-detailed/member-detailed.component';
 import { MemberEditComponent } from './members/member-edit/member-edit.component';
-import { PreventUnsavedChanges } from './_guards/prevent-unsaved-changes.guard';
 import { PhotoEditorComponent } from './members/photo-editor/photo-editor.component';
 import { SharedModule } from './shared/shared.module';
 import { CoreModule } from './core/core.module';
@@ -50,8 +49,7 @@ import { JwtInterceptor } from './core/interceptors/jwt.interceptor';
    exports: [
    ],
    providers: [
-      { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-      PreventUnsavedChanges,
+      { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
    ],
    bootstrap: [
       AppComponent
