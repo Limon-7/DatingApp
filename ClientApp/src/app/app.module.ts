@@ -20,6 +20,7 @@ import { SharedModule } from './shared/shared.module';
 import { CoreModule } from './core/core.module';
 import { AccountModule } from './account/account.module';
 import { JwtInterceptor } from './core/interceptors/jwt.interceptor';
+import { MemberMessageComponent } from './members/member-message/member-message.component';
 
 
 
@@ -33,6 +34,7 @@ import { JwtInterceptor } from './core/interceptors/jwt.interceptor';
       MemberDetailedComponent,
       MemberEditComponent,
       PhotoEditorComponent,
+      MemberMessageComponent,
    ],
    imports: [
       BrowserModule,
