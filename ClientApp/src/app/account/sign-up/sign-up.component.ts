@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { BsDatepickerConfig } from "ngx-bootstrap/datepicker";
 import { Router } from "@angular/router";
 import { AccountService } from "src/app/shared/services/account.service";
-import { UsernameValidators } from "src/app/_validators/username.validators";
+import { UsernameValidators } from "src/app/shared/validators/username.validators";
 import { ToastrService } from "ngx-toastr";
 import { IUser } from "src/app/shared/models/iUser";
 

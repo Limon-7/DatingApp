@@ -5,7 +5,7 @@ import { ListsComponent } from './lists/lists.component';
 import { AuthGuard } from './core/guards/auth.guard';
 import { MemberDetailedComponent } from './members/member-detailed/member-detailed.component';
 import { MemberEditComponent } from './members/member-edit/member-edit.component';
-import { PreventUnsavedChanges } from './_guards/prevent-unsaved-changes.guard';
+import { PreventUnsavedChanges } from './core/guards/prevent-unsaved-changes.guard';
 export const appRoutes: Routes = [
     { path: '', component: HomeComponent },
     {
