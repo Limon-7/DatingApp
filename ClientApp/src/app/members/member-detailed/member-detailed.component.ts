@@ -1,5 +1,4 @@
 import { Component, OnInit } from "@angular/core";
-import { AlertifyService } from "src/app/_services/alertify.service";
 import { ActivatedRoute } from "@angular/router";
 import {
   NgxGalleryOptions,
@@ -10,6 +9,7 @@ import { MemberService } from "src/app/shared/services/member.service";
 import { IMember } from "src/app/shared/models/iMember";
 import { MessageService } from "src/app/shared/services/message.service";
 import { IMessage } from "src/app/shared/models/iMessage";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: "app-member-detailed",
@@ -27,7 +27,7 @@ export class MemberDetailedComponent implements OnInit {
   constructor(
     private memberService: MemberService,
     private messageService: MessageService,
-    private alertify: AlertifyService,
+    private toastr: ToastrService,
     private activatedRoute: ActivatedRoute
   ) {}
 

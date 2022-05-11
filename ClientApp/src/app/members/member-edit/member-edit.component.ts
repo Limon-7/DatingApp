@@ -1,12 +1,11 @@
 import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { AlertifyService } from 'src/app/_services/alertify.service';
 import { NgForm } from '@angular/forms';
 import { IMember } from 'src/app/shared/models/iMember';
 import { AccountService } from 'src/app/shared/services/account.service';
 import { MemberService } from 'src/app/shared/services/member.service';
 import { take } from 'rxjs/operators';
 import { IUser } from 'src/app/shared/models/iUser';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-member-edit',
@@ -31,7 +30,7 @@ export class MemberEditComponent implements OnInit {
     }
   }
 
-  constructor(private alertify: AlertifyService,
+  constructor(private toastr: ToastrService,
     private accountService: AccountService, private memberService: MemberService,) {
     this.accountService.currentUserObservable$.pipe(take(1)).subscribe(user => this.user = user);
   }
@@ -50,7 +49,7 @@ export class MemberEditComponent implements OnInit {
     console.log("model:", this.member);
     this.member.gender = "Male"
     this.memberService.updateMember(this.member).subscribe(() => {
-      this.alertify.success('Profile updated successfully');
+      this.toastr.success('Profile updated successfully');
       this.editForm.reset(this.member);
     })
 

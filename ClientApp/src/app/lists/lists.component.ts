@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { AlertifyService } from '../_services/alertify.service';
 import { IMember } from '../shared/models/iMember';
 import { MemberService } from '../shared/services/member.service';
 import { IPaginate } from '../shared/models/iPaginate';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-lists',
@@ -21,7 +21,7 @@ export class ListsComponent implements OnInit {
   pageSizeOptions = [{ value: 3, display: 3 }, { value: 10, display: 10 }, { value: 20, display: 20 }];
 
   constructor(public memberService: MemberService,
-    public route: ActivatedRoute, public alertify: AlertifyService) { }
+    public route: ActivatedRoute, public toastr: ToastrService) { }
 
   ngOnInit() {
     this.loadLikes()

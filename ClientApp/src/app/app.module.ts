@@ -21,6 +21,9 @@ import { CoreModule } from './core/core.module';
 import { AccountModule } from './account/account.module';
 import { JwtInterceptor } from './core/interceptors/jwt.interceptor';
 import { MemberMessageComponent } from './members/member-message/member-message.component';
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { LoadingInterceptor } from './core/interceptors/loading.interceptor';
+import { ToastrModule } from 'ngx-toastr';
 
 
 
@@ -44,6 +47,12 @@ import { MemberMessageComponent } from './members/member-message/member-message.
       SharedModule,
       FormsModule,
       ReactiveFormsModule,
+      NgxSpinnerModule,
+      ToastrModule.forRoot({
+         timeOut: 10000,
+         positionClass: 'toast-top-right',
+         preventDuplicates: true,
+       }),
 
       RouterModule.forRoot(appRoutes),
       AccountModule
@@ -51,7 +60,9 @@ import { MemberMessageComponent } from './members/member-message/member-message.
    exports: [
    ],
    providers: [
-      { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
+      { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+      {provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true}
+
    ],
    bootstrap: [
       AppComponent

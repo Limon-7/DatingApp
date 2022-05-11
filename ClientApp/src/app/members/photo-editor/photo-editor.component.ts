@@ -1,13 +1,13 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Photo } from 'src/app/_models/photo';
 import { FileUploader } from 'ng2-file-upload';
 import { environment } from 'src/environments/environment';
-import { AlertifyService } from 'src/app/_services/alertify.service';
 import { IMember } from 'src/app/shared/models/iMember';
 import { AccountService } from 'src/app/shared/services/account.service';
 import { IUser } from 'src/app/shared/models/iUser';
 import { take } from 'rxjs/operators';
 import { PhotoService } from 'src/app/shared/services/photo.service';
+import { ToastrService } from 'ngx-toastr';
+import { IPhoto } from 'src/app/shared/models/iPhoto';
 
 @Component({
   selector: 'app-photo-editor',
@@ -23,7 +23,7 @@ export class PhotoEditorComponent implements OnInit {
   hasBaseDropzoneOver = false;
   baseUrl = environment.apiUrl;
 
-  constructor(private accountService: AccountService, private photoService: PhotoService, private alertify: AlertifyService) {
+  constructor(private accountService: AccountService, private photoService: PhotoService, private toastr: ToastrService) {
     this.accountService.currentUserObservable$.pipe(take(1)).subscribe(user => this.user = user);
   }
 
@@ -35,7 +35,7 @@ export class PhotoEditorComponent implements OnInit {
     this.hasBaseDropzoneOver = e;
   }
 
-  setMainPhoto(photo: Photo) {
+  setMainPhoto(photo: IPhoto) {
     this.photoService.setMainPhoto(photo.id).subscribe(() => {
       this.user.photoUrl = photo.url;
       this.accountService.setCurrentUser(this.user);
@@ -70,7 +70,7 @@ export class PhotoEditorComponent implements OnInit {
 
     this.uploader.onSuccessItem = (item, response, status, headers) => {
       if (response) {
-        const photo: Photo = JSON.parse(response);
+        const photo: IPhoto = JSON.parse(response);
         this.member.photos.push(photo);
         if (photo.isMain) {
           this.user.photoUrl = photo.url;
