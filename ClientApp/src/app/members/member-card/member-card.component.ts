@@ -18,7 +18,8 @@ export class MemberCardComponent implements OnInit {
     this.memberService.addLike(this.member.userName).subscribe(data => {
       this.altertify.success('you have liked: ' + this.member.knownAs);
     }, err => {
-      this.altertify.error(err);
+      console.log(err);
+      this.altertify.error(err.error);
     });
   }
 }

@@ -2,6 +2,7 @@ bin/
 obj/
 *.db
 .vscode
+.vs/
 *db-shm
 *db-wal
 

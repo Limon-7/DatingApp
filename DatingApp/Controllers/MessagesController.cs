@@ -37,14 +37,12 @@ namespace DatingApp.Controllers
             return messages;
         }
 
-        [HttpGet("thread/{username}")]
-        public async Task<ActionResult<IEnumerable<MessageDto>>> GetMessageThread([FromQuery]
-            string username)
+       [HttpGet("thread/{username}")]
+        public async Task<ActionResult<IEnumerable<MessageDto>>> GetMessageThread(string username)
         {
             var currentUsername = User.GetUsername();
 
-            var messages = await _service.GetMessageThread(currentUsername, username);
-            return Ok(messages);
+            return Ok(await _service.GetMessageThread(currentUsername, username));
         }
 
         [HttpPost]
@@ -73,21 +71,21 @@ namespace DatingApp.Controllers
             return BadRequest("Failed to send message");
         }
 
-        [HttpDelete("{id}")]
+         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteMessage(int id)
         {
             var username = User.GetUsername();
 
             var message = await _service.GetMessage(id);
 
-            if (message.Sender.UserName != username && message.Recipient.UserName != username)
+            if (message.Sender.UserName != username && message.Recipient.UserName != username) 
                 return Unauthorized();
 
             if (message.Sender.UserName == username) message.SenderDeleted = true;
 
             if (message.Recipient.UserName == username) message.RecipientDeleted = true;
 
-            if (message.SenderDeleted && message.RecipientDeleted)
+            if (message.SenderDeleted && message.RecipientDeleted) 
                 _service.DeleteMessage(message);
 
             if (await _service.SaveAllAsync()) return Ok();

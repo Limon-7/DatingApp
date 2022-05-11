@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 
 import { MessageRoutingModule } from './message-routing.module';
 import { MessageComponent } from './message.component';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -10,7 +12,10 @@ import { MessageComponent } from './message.component';
     MessageComponent
   ],
   imports: [
+    ReactiveFormsModule,
+    FormsModule,
     CommonModule,
+    PaginationModule,
     MessageRoutingModule
   ]
 })
