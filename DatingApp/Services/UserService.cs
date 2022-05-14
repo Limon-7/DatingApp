@@ -39,13 +39,13 @@ namespace DatingApp.Interfaces
 
         public async Task<AppUser> GetUserById(int id)
         {
-            var user = await _context.AppUsers.Include(p => p.Photos).FirstOrDefaultAsync(u => u.Id == id);
+            var user = await _context.Users.Include(p => p.Photos).FirstOrDefaultAsync(u => u.Id == id);
             return user;
         }
 
         public async Task<PageList<AppUser>> GetUsers(UserParams userParams)
         {
-            var users = _context.AppUsers.Include(p => p.Photos).OrderByDescending(u => u.LastActive).AsQueryable();
+            var users = _context.Users.Include(p => p.Photos).OrderByDescending(u => u.LastActive).AsQueryable();
             users = users.Where(u => u.Id != userParams.UserId);
             users = users.Where(u => u.Gender == userParams.Gender);
             // if (userParams.Likers)
@@ -89,7 +89,7 @@ namespace DatingApp.Interfaces
         // private async Task<IEnumerable<int>> GetUserLikes(int id, bool likers)
         // {
         //     //find  the login user whom he liked or who is being liked by other user
-        //     var user = await _context.AppUsers
+        //     var user = await _context.Users
         //     .Include(l => l.Likers)
         //     .Include(l => l.Likees)
         //     .FirstOrDefaultAsync(u => u.Id == id);
@@ -112,7 +112,7 @@ namespace DatingApp.Interfaces
 
         public async Task<AppUser> GetUserByUserName(string userName)
         {
-            return await _context.AppUsers
+            return await _context.Users
                  .Where(x => x.UserName == userName)
                  .ProjectTo<AppUser>(_mapper.ConfigurationProvider)
                  .SingleOrDefaultAsync();
@@ -120,26 +120,26 @@ namespace DatingApp.Interfaces
 
         public async Task<IEnumerable<AppUser>> GetUsersAsync()
         {
-            return await _context.AppUsers
+            return await _context.Users
                 .Include(p => p.Photos)
                 .ToListAsync();
         }
 
         public async Task<AppUser> GetUserByIdAsync(int id)
         {
-            return await _context.AppUsers.FindAsync(id);
+            return await _context.Users.FindAsync(id);
         }
 
         public async Task<AppUser> GetUserByUsernameAsync(string username)
         {
-            return await _context.AppUsers
+            return await _context.Users
                .Include(p => p.Photos)
                .SingleOrDefaultAsync(x => x.UserName == username);
         }
 
         public async Task<PageList<MemberDto>> GetMembersAsync(UserParams userParams)
         {
-            var query = _context.AppUsers.AsQueryable();
+            var query = _context.Users.AsQueryable();
 
             query = query.Where(u => u.UserName != userParams.CurrentUsername);
             query = query.Where(u => u.Gender.ToLower() == userParams.Gender.ToLower());
@@ -162,7 +162,7 @@ namespace DatingApp.Interfaces
 
         public async Task<MemberDto> GetMemberAsync(string username)
         {
-            return await _context.AppUsers
+            return await _context.Users
                 .Where(x => x.UserName == username)
                 .ProjectTo<MemberDto>(_mapper.ConfigurationProvider)
                 .SingleOrDefaultAsync();
@@ -170,7 +170,7 @@ namespace DatingApp.Interfaces
 
         public async Task<string> GetUserGender(string username)
         {
-            return await _context.AppUsers
+            return await _context.Users
                .Where(x => x.UserName == username)
                .Select(x => x.Gender).FirstOrDefaultAsync();
         }
@@ -182,7 +182,7 @@ namespace DatingApp.Interfaces
 
         public async Task<Pagination<MemberDto>> GetUsersWithPaginationAsync(UserParams userParams)
         {
-            var query = _context.AppUsers.AsQueryable();
+            var query = _context.Users.AsQueryable();
 
             query = query.Where(u => u.UserName != userParams.CurrentUsername);
             query = query.Where(u => u.Gender.ToLower() == userParams.Gender.ToLower());
@@ -199,7 +199,7 @@ namespace DatingApp.Interfaces
             };
             var data = query.ProjectTo<MemberDto>(_mapper
                             .ConfigurationProvider).AsNoTracking();
-            var count = await _context.AppUsers.CountAsync();
+            var count = await _context.Users.CountAsync();
             return new Pagination<MemberDto>(
                     userParams.PageNumber, userParams.PageSize, count, data);
         }

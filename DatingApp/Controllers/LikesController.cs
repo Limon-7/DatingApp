@@ -22,7 +22,7 @@ namespace DatingApp.Controllers
 
         [HttpPost("{username}")]
         public async Task<ActionResult> AddLike(string username)
-        {
+           {
             var sourceUserId = User.GetUserId();
             var likedUser = await _userService.GetUserByUsernameAsync(username);
             var sourceUser = await _service.GetUserWithLikes(sourceUserId);

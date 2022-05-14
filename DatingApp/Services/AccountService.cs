@@ -14,12 +14,8 @@ namespace DatingApp.Interfaces
         }
         public async Task<AppUser> Login(string userName, string password)
         {
-            var user = await _context.AppUsers.Include(p => p.Photos).FirstOrDefaultAsync(x => x.UserName.ToLower() == userName.ToLower());
+            var user = await _context.Users.Include(p => p.Photos).FirstOrDefaultAsync(x => x.UserName.ToLower() == userName.ToLower());
             if (user == null)
-            {
-                return null;
-            }
-            if (!VarifiedPassword(password, user.PasswordHash, user.PasswordSalt))
             {
                 return null;
             }
@@ -42,15 +38,6 @@ namespace DatingApp.Interfaces
 
         public async Task<AppUser> Register(AppUser user, string password)
         {
-            byte[] passwordHash, passwordSalt;
-            // CreatePasswordHas(password,  out  passwordhash, passwordsalt);
-            using (var hmc = new HMACSHA512())
-            {
-                passwordHash = hmc.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-                passwordSalt = hmc.Key;
-            }
-            user.PasswordHash = passwordHash;
-            user.PasswordSalt = passwordSalt;
 
             await _context.AddAsync(user);
             await _context.SaveChangesAsync();
@@ -60,7 +47,7 @@ namespace DatingApp.Interfaces
 
         public async Task<bool> UserExists(string userName)
         {
-            if (await _context.AppUsers.AnyAsync(x => x.UserName == userName))
+            if (await _context.Users.AnyAsync(x => x.UserName == userName))
             {
                 return true;
             }
@@ -68,7 +55,7 @@ namespace DatingApp.Interfaces
         }
         public async Task<AppUser> UserAlreadyExists(string userName)
         {
-            var user = await _context.AppUsers.FirstOrDefaultAsync(x => x.UserName == userName);
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.UserName == userName);
             return user;
 
         }

@@ -1,42 +1,48 @@
 using System;
 using System.Collections.Generic;
-using System.Security.Cryptography;
+using System.Threading.Tasks;
 using DatingApp.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
 namespace DatingApp.Data
 {
-    public class Seed
+  public class Seed
+  {
+
+    public static async Task SeedUsers(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager)
     {
-        private readonly DataContext _context;
+      if (await userManager.Users.AnyAsync()) return;
 
-        public Seed(DataContext context)
-        {
-            _context = context;
-        }
-        public void SeedUsers()
-        {
-            var userData = System.IO.File.ReadAllText("Data/UserSeedData.json");
-            var users = JsonConvert.DeserializeObject<List<AppUser>>(userData);
-            foreach (var user in users)
-            {
-                byte[] passwordHash, passwordSalt;
-                cretePassword("password", out passwordHash, out passwordSalt);
-                user.PasswordHash = passwordHash;
-                user.PasswordSalt = passwordSalt;
-                user.UserName = user.UserName.ToLower();
-                _context.AppUsers.Add(user);
-            }
-            _context.SaveChanges();
-        }
+      var userData = System.IO.File.ReadAllText("Data/UserSeedData.json");
+      var users = JsonConvert.DeserializeObject<List<AppUser>>(userData);
 
-        private void cretePassword(string password, out byte[] passwordHash, out byte[] passwordSalt)
-        {
-            using (var hmc = new HMACSHA512())
+      var roles = new List<AppRole>
             {
-                passwordHash = hmc.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-                passwordSalt = hmc.Key;
-            }
-        }
+                new AppRole{Name = "Member"},
+                new AppRole{Name = "Admin"},
+                new AppRole{Name = "Moderator"},
+            };
+      foreach (var role in roles)
+      {
+        await roleManager.CreateAsync(role);
+      }
+      foreach (var user in users)
+      {
+        user.UserName = user.UserName.ToLower();
+        await userManager.CreateAsync(user, "$Pass0word");
+
+        await userManager.AddToRoleAsync(user, "Member");
+      }
+
+      var admin = new AppUser
+      {
+        UserName = "admin"
+      };
+      await userManager.CreateAsync(admin, "$Pass0word");
+
+      await userManager.AddToRolesAsync(admin, new[] { "Admin", "Moderator" });
     }
+  }
 }
