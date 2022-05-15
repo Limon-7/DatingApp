@@ -15,12 +15,15 @@ import { RouterModule } from "@angular/router";
 import { HasRoleDirective } from "./directives/has-role.directive";
 import { NgxSpinnerModule } from "ngx-spinner";
 import { ToastrModule } from "ngx-toastr";
+import { RolesModalComponent } from './components/roles-modal/roles-modal.component';
+import { ModalModule } from "ngx-bootstrap/modal";
 
 @NgModule({
   declarations: [
     // MemberCardComponent
 
     HasRoleDirective,
+    RolesModalComponent,
   ],
   imports: [
     CommonModule,
@@ -37,6 +40,7 @@ import { ToastrModule } from "ngx-toastr";
     BsDatepickerModule.forRoot(),
     PaginationModule.forRoot(),
     ButtonsModule.forRoot(),
+    ModalModule.forRoot(),
 
     NgxSpinnerModule,
     ToastrModule.forRoot({
@@ -65,7 +69,8 @@ import { ToastrModule } from "ngx-toastr";
 
     // components
     // MemberCardComponent
-    HasRoleDirective
+    HasRoleDirective,
+    RolesModalComponent
   ],
 })
 export class SharedModule {}

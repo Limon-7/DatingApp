@@ -7,6 +7,7 @@ import { MemberDetailedComponent } from "./members/member-detailed/member-detail
 import { MemberEditComponent } from "./members/member-edit/member-edit.component";
 import { PreventUnsavedChanges } from "./core/guards/prevent-unsaved-changes.guard";
 import { AdminGuard } from "./core/guards/admin.guard";
+import { AdminDashboardComponent } from "./admin/admin-dashboard/admin-dashboard.component";
 export const appRoutes: Routes = [
   { path: "", component: HomeComponent },
   {
@@ -35,8 +36,7 @@ export const appRoutes: Routes = [
       { path: "lists", component: ListsComponent },
       {
         path: "admin",
-        loadChildren: () =>
-          import("./admin/admin.module").then((m) => m.AdminModule),
+        component: AdminDashboardComponent,
         canActivate: [AdminGuard],
       },
     ],

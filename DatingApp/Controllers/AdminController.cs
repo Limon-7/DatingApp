@@ -26,7 +26,7 @@ namespace DatingApp.Controllers
                 .Select(u => new
                 {
                   u.Id,
-                  Username = u.UserName,
+                  UserName = u.UserName,
                   Roles = u.UserRoles.Select(r => r.Role.Name).ToList()
                 })
                 .ToListAsync();
@@ -34,7 +34,7 @@ namespace DatingApp.Controllers
     }
 
 
-    [Authorize(Policy = "RequireAdminRole")]
+    [Authorize(Policy = "RequiredAdmin")]
     [HttpPost("edit-roles/{username}")]
     public async Task<ActionResult> EditRoles(string username, [FromQuery] string roles)
     {

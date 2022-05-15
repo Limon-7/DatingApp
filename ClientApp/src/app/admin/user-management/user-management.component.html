@@ -1,15 +1,14 @@
-<h2>Admin Panel</h2>
-<div class="tab-panel">
-    <tabset class="member-tabset">
-        <tab heading='User management' *appHasRole='["Admin"]'>
-            <div class="container">
-                <app-user-management></app-user-management>
-            </div>
-        </tab>
-        <tab heading='Photo management' *appHasRole='["Admin", "Moderator"]'>
-            <div class="container">
-                <app-photo-management></app-photo-management>
-            </div>
-        </tab>
-    </tabset>
+<div class="row">
+    <table class="table">
+        <tr>
+            <th style="width: 30%;">Username</th>
+            <th style="width: 40%;">Active roles</th>
+            <th style="width: 30%;"></th>
+        </tr>
+        <tr *ngFor="let user of users">
+            <td>{{user.userName}}</td>
+            <td>{{user.roles}}</td>
+            <td><button (click)="openRolesModal(user)" class="btn btn-info">Edit Roles</button></td>
+        </tr>
+    </table>
 </div>
