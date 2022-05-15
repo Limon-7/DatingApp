@@ -1,32 +1,32 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
 
-import { FileUploadModule } from 'ng2-file-upload';
-import { NgxGalleryModule } from '@kolkov/ngx-gallery';
-import { TimeagoModule } from 'ngx-timeago';
+import { FileUploadModule } from "ng2-file-upload";
+import { NgxGalleryModule } from "@kolkov/ngx-gallery";
+import { TimeagoModule } from "ngx-timeago";
 
-import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { TabsModule } from 'ngx-bootstrap/tabs';
-import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
-import { PaginationModule } from 'ngx-bootstrap/pagination';
-import { ButtonsModule } from 'ngx-bootstrap/buttons';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
-
-
-
-
+import { BsDropdownModule } from "ngx-bootstrap/dropdown";
+import { TabsModule } from "ngx-bootstrap/tabs";
+import { BsDatepickerModule } from "ngx-bootstrap/datepicker";
+import { PaginationModule } from "ngx-bootstrap/pagination";
+import { ButtonsModule } from "ngx-bootstrap/buttons";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { RouterModule } from "@angular/router";
+import { HasRoleDirective } from "./directives/has-role.directive";
+import { NgxSpinnerModule } from "ngx-spinner";
+import { ToastrModule } from "ngx-toastr";
 
 @NgModule({
   declarations: [
     // MemberCardComponent
+
+    HasRoleDirective,
   ],
   imports: [
     CommonModule,
     RouterModule,
     ReactiveFormsModule,
     FormsModule,
-
 
     FileUploadModule,
     NgxGalleryModule,
@@ -38,6 +38,12 @@ import { RouterModule } from '@angular/router';
     PaginationModule.forRoot(),
     ButtonsModule.forRoot(),
 
+    NgxSpinnerModule,
+    ToastrModule.forRoot({
+      timeOut: 10000,
+      positionClass: "toast-top-right",
+      preventDuplicates: true,
+    }),
   ],
   exports: [
     RouterModule,
@@ -48,6 +54,9 @@ import { RouterModule } from '@angular/router';
     NgxGalleryModule,
     TimeagoModule,
 
+    NgxSpinnerModule,
+    ToastrModule,
+
     BsDropdownModule,
     TabsModule,
     BsDatepickerModule,
@@ -56,7 +65,7 @@ import { RouterModule } from '@angular/router';
 
     // components
     // MemberCardComponent
-
+    HasRoleDirective
   ],
 })
-export class SharedModule { }
+export class SharedModule {}

@@ -2,8 +2,6 @@ import { BrowserModule, HammerGestureConfig, HAMMER_GESTURE_CONFIG } from '@angu
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
 import { appRoutes } from './routes';
 
 import { AppComponent } from './app.component';
@@ -21,9 +19,8 @@ import { CoreModule } from './core/core.module';
 import { AccountModule } from './account/account.module';
 import { JwtInterceptor } from './core/interceptors/jwt.interceptor';
 import { MemberMessageComponent } from './members/member-message/member-message.component';
-import { NgxSpinnerModule } from 'ngx-spinner';
 import { LoadingInterceptor } from './core/interceptors/loading.interceptor';
-import { ToastrModule } from 'ngx-toastr';
+
 
 
 
@@ -45,14 +42,7 @@ import { ToastrModule } from 'ngx-toastr';
       HttpClientModule,
       CoreModule,
       SharedModule,
-      FormsModule,
-      ReactiveFormsModule,
-      NgxSpinnerModule,
-      ToastrModule.forRoot({
-         timeOut: 10000,
-         positionClass: 'toast-top-right',
-         preventDuplicates: true,
-       }),
+      
 
       RouterModule.forRoot(appRoutes),
       AccountModule

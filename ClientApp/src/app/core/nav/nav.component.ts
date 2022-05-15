@@ -26,4 +26,8 @@ export class NavComponent implements OnInit {
       this.router.navigate(['/members']);
     });
   }
+
+  logout(f): void{
+    this.accountService.logout();
+  }
 }

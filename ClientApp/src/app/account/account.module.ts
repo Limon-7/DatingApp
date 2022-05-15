@@ -20,8 +20,6 @@ import { RouterModule } from '@angular/router';
   ],
   exports: [
     HomeComponent
-  ],
-  // schemas: [CUSTOM_ELEMENTS_SCHEMA]
-
+  ]
 })
 export class AccountModule { }
